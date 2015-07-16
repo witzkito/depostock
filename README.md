@@ -1,4 +1,2 @@
-depostock
-=========
-
-A Symfony project created on July 16, 2015, 11:19 am.
+# depostock
+Sistema de Stock Basico para granos, deṕsito, ingresos y gastos
