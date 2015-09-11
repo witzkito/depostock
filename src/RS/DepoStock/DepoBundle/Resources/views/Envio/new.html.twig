@@ -1,0 +1,122 @@
+{% extends "DepoBundle::layout.html.twig" %}
+
+{% block body -%}
+    <div class="container">
+        <h1>Despacho {{deposito.nombre}}</h1>
+        
+        
+        
+        {{ form_start(form) }}
+            
+        
+            {{ form_row(form.transporte) }}
+            {{ form_row(form.fecha) }}
+            <h4>Pedidos</h4>
+            
+            <table class="table">
+                {% if (pedidos | length) > 0 %}
+                    <tr>
+                        <td colspan="1" class="success">{{pedidos[0].pedido.fecha | date('d/m/Y')}} - {{pedidos[0].pedido.cliente}}</td>
+                        <td class="success">Cantidad</td>
+                        <td class="success">Precio</td>
+                        <td class="success" colspan="2">Total</td>
+                        {% for pro in pedidos %}
+                        <tr>
+                            {% if not pro.realizado %}
+                                <td>&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-chevron-right"></span>{{pro.producto}}</td>
+                                <td><b>{{pro.cantidad}}</b></td>
+                                <td><b>u$s {{pro.producto.precio}}</b></td>
+                                <td><b>u$s {{pro.total}}</b></td>                                
+                                <td><input id="rs_depostock_depobundle_envio_{{pro.id}}" type="checkbox" value="1" name="rs_depostock_depobundle_envio[{{pro.id}}]"></td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tr>
+                {% else %}
+                    <tr><td>No existen pedidos cargados</td></tr>
+                {% endif %}
+            </table>
+            
+            <br />
+            <input type="submit" class="btn btn-info" value="Guardar">
+        </form>
+
+        <ul class="record_actions">
+            <li>
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <a href="{{ path('depo_homepage') }}">
+                    Volver a la lista
+                </a>
+            </li>
+        </ul>
+        
+    </div>
+{% endblock %}
+
+{%block javascripts %}
+    <script>
+        var $collectionHolder;
+
+        // setup an "add a tag" link
+        var $addTagLink = $('<input type="button" class="btn btn-success" value="Agregar un producto">');
+        var $newLinkLi = $('<li></li>').append($addTagLink);
+
+        jQuery(document).ready(function() {
+            // Get the ul that holds the collection of tags
+            $collectionHolder = $('ul.productos');
+
+            // add the "add a tag" anchor and li to the tags ul
+            $collectionHolder.append($newLinkLi);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addTagLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addTagForm($collectionHolder, $newLinkLi);
+            });
+            
+            
+            
+            function addTagForm($collectionHolder, $newLinkLi) {
+                // Get the data-prototype explained earlier
+                var prototype = $collectionHolder.data('prototype');
+
+                // get the new index
+                var index = $collectionHolder.data('index');
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm = prototype.replace(/__name__/g, index);
+
+                // increase the index with one for the next item
+                $collectionHolder.data('index', index + 1);
+
+                // Display the form in the page in an li, before the "Add a tag" link li
+                var $newFormLi = $('<li></li>').append(newForm);
+                $newLinkLi.before($newFormLi);
+                addTagFormDeleteLink($newFormLi);
+            }
+        });
+        function addTagFormDeleteLink($tagFormLi) {
+            var $removeFormA = $('<input type="button" value="Borrar" class="btn btn-danger"><br />');
+            $tagFormLi.append($removeFormA);
+
+            $removeFormA.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // remove the li for the tag form
+                $tagFormLi.remove();
+        });
+}
+
+    </script>   
+    {{ parent() }}
+    {{ form_javascript(form) }}
+    {{ form_stylesheet(form) }}
+{% endblock %}

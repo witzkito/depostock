@@ -1,0 +1,43 @@
+{% extends "DepoBundle::layout.html.twig" %}
+
+{% block body -%}
+    <div class="container">
+    <h1>Producto</h1>
+
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ entity.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Precio</th>
+                <td>{{ entity.precio }}</td>
+            </tr>
+            <tr>
+                <th>Foto</th>
+                <td>
+                    {% if entity.fotoproducto != null %}
+                        <img src="{{ asset(entity.fotoproducto.webpath)}}" width=100>
+                    {% endif %}    
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <span class="glyphicon glyphicon-chevron-left"></span>
+        <a href="{{ path('producto') }}">
+            Volver a la lista
+        </a>
+    </li>
+    <li>
+        <span class=" glyphicon glyphicon-floppy-disk"></span>
+        <a href="{{ path('producto_edit', { 'id': entity.id }) }}">
+            Editar
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "DepoBundle::layout.html.twig" %}
+
+{% block body -%}
+    <div class="container">
+        <h1>Transportes</h1>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Patente</th>
+                        <th>Tipo</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td><a href="{{ path('transporte_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                        <td>{{ entity.nombre }}</td>
+                        <td>{{ entity.patente }}</td>
+                        <td>{{ entity.tipo }}</td>
+                        <td>
+                        <ul>
+                            <li>
+                                <a href="{{ path('transporte_show', { 'id': entity.id }) }}">Mostrar</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('transporte_edit', { 'id': entity.id }) }}">Editar</a>
+                            </li>
+                        </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <ul class="record_actions">
+                <li>
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    <a href="{{ path('transporte_new') }}">
+                        Crear nuevo transporte
+                    </a>
+                </li>
+            </ul>
+        </div>
+    {% endblock %}

@@ -1,0 +1,24 @@
+services:
+    depo.admin.empresa:
+        class: RS\DepoStock\DepoBundle\Admin\EmpresaAdmin
+        arguments: [~, RS\DepoStock\DepoBundle\Entity\Empresa, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: General, label: Empresa}
+
+    depo.general.deposito:
+        class: RS\DepoStock\DepoBundle\Admin\DepositoAdmin
+        arguments: [~, RS\DepoStock\DepoBundle\Entity\Deposito, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: General, label: Deposito}
+
+    depo.admin.usuario_deposito:
+        class: RS\DepoStock\DepoBundle\Admin\UsuarioDepositoAdmin
+        arguments: [~, RS\DepoStock\DepoBundle\Entity\UsuarioDeposito, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: "%sonata.user.admin.groupname%", label: UsuarioDeposito}
+
+    depo.admin.gasto:
+        class: RS\DepoStock\DepoBundle\Admin\GastoAdmin
+        arguments: [~, RS\DepoStock\DepoBundle\Entity\Gasto, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: General, label: Gasto}

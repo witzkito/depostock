@@ -1,0 +1,67 @@
+{% extends "DepoBundle::layout.html.twig" %}
+
+{% block body -%}
+    <div class="container">
+            <h1>Envio</h1>
+
+            <table class="table table-striped">
+                <tbody>
+                    <tr>                        
+                        <th>Fecha</th>
+                        <td colspan="6">{{ entity.fecha|date('Y-m-d H:i:s') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Transportista</th>
+                        <td colspan="6">{{ entity.transporte }}</td>
+                    </tr>
+                    {% set total = 0 %}
+                    {% for producto in entity.productos %}
+                        <tr>
+                            <td></td>
+                            <td><span class="glyphicon glyphicon-chevron-right"></span>&nbsp; &nbsp;{{producto.cliente}}</td>
+                            <td>{{producto.producto}}</td>
+                            <td>{{producto.cantidad}}</td>
+                            <td>${{producto.precio}}</td>
+                            <td>${{producto.cantidad * producto.precio}}</td>
+                            <td>
+                                {% if producto.confirmado %}
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    {% set total = total + (producto.cantidad * producto.precio) %}
+                                {% else %}
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                {% endif %}
+                            </td>
+                        </tr>    
+                    {% endfor %}
+                    {% for gasto in entity.gastos %}
+                        <tr>
+                            <td></td>
+                            <td><span class="glyphicon glyphicon-chevron-right"></span>&nbsp; &nbsp;{{gasto.gasto}}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>${{gasto.cantidad}}</td>
+                            
+                            <td>
+                                {% set total = total + gasto.cantidad %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <th class="success" colspan="5">Total</th>
+                        <td class="success" colspan="3">${{total}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+                <ul class="record_actions">
+            <li>
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <a href="{{ path('envio') }}">
+                    Volver a la lista
+                </a>
+            </li>            
+            <li>{{ form(delete_form) }}</li>
+        </ul>
+    </div>
+{% endblock %}

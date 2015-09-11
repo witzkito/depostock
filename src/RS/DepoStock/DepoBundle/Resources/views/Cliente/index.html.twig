@@ -1,0 +1,50 @@
+{% extends "DepoBundle::layout.html.twig" %}
+
+{% block body -%}
+    <div class="container">
+        <h1>Clientes</h1>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Localidad</th>
+                    <th>Calle</th>
+                    <th>Numero</th>
+                    <th>Telefono</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.nombre }}</td>
+                    <td>{{ entity.localidad }}</td>
+                    <td>{{ entity.calle }}</td>
+                    <td>{{ entity.numero }}</td>
+                    <td>{{ entity.telefono }}</td>
+                    <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('cliente_show', { 'id': entity.id }) }}">Ver</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('cliente_edit', { 'id': entity.id }) }}">Editar</a>
+                        </li>
+                    </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <ul class="record_actions">
+            <li>
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                <a href="{{ path('cliente_new') }}">
+                    Crear nuevo Cliente
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}

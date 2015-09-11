@@ -1,0 +1,44 @@
+{% extends "DepoBundle::layout.html.twig" %}
+
+{% block body -%}
+    <div class="container">
+        <h1>Transporte</h1>
+
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ entity.id }}</td>
+                </tr>
+                <tr>
+                    <th>Nombre</th>
+                    <td>{{ entity.nombre }}</td>
+                </tr>
+                <tr>
+                    <th>Patente</th>
+                    <td>{{ entity.patente }}</td>
+                </tr>
+                <tr>
+                    <th>Tipo</th>
+                    <td>{{ entity.tipo }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+            <ul class="record_actions">
+        <li>
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <a href="{{ path('transporte') }}">
+                Volver a la lista
+            </a>
+        </li>
+        <li>
+            <span class=" glyphicon glyphicon-floppy-disk"></span>
+            <a href="{{ path('transporte_edit', { 'id': entity.id }) }}">
+                Editar
+            </a>
+        </li>
+        <li>{{ form(delete_form) }}</li>
+    </ul>
+    </div>
+{% endblock %}

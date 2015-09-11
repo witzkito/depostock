@@ -1,0 +1,7 @@
+.record_actions{
+    list-style-type: none;
+}
+
+.record_actions li{
+    padding-top: 10px;
+}

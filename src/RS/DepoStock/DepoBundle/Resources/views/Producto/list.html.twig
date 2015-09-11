@@ -1,0 +1,34 @@
+{% extends "DepoBundle::layout.html.twig" %}
+
+{% block body -%}
+    <div class="container">
+        <h3><b>Lista de Stock</b></h3>
+        <h4>&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-chevron-right"></span>&nbsp;&nbsp;&nbsp;{{ entity }} - {{ deposito }}</h4>
+        <hr>
+        <br>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Entrada</th>
+                    <th>Salida</th>
+                    <th>Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% set stock = 0 %}
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity['fecha'] | date('d/m/y H:i') }}</td>
+                    <td>{{ entity['cliente'] }}</td>
+                    <td>{{ entity['entrada'] }}</td>
+                    <td>{{ entity['salida'] }}</td>
+                    <td>{{ entity['stock'] }}</td>                    
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}

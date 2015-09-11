@@ -1,0 +1,96 @@
+{% extends "DepoBundle::layout.html.twig" %}
+
+{% block body -%}
+    <div class="container">
+    <h1>Creacion de Pedido</h1>
+
+     {{ form_start(form) }}
+            {# render the task's only field: description #}
+            {{ form_row(form.cliente) }}
+            
+            <h3>Productos</h3>
+            <ul class="productos" data-prototype="{{ form_widget(form.productos.vars.prototype)|e }}">
+                {% for producto in form.productos %}
+                    <li>{{ form_row(producto.producto) }}</li>
+                    <li>{{ form_row(producto.cantidad) }}</li>
+                {% endfor %}
+            </ul>
+        {{ form_end(form) }}
+
+        <ul class="record_actions">
+            <li>
+                <span class="glyphicon glyphicon-chevron-left"></span>
+             <a href="{{ path('pedido') }}">
+                Volver a la lista
+             </a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+
+{%block javascripts %}
+    <script>
+        var $collectionHolder;
+
+        // setup an "add a tag" link
+        var $addTagLink = $('<input type="button" class="btn btn-success" value="Agregar un producto">');
+        var $newLinkLi = $('<li></li>').append($addTagLink);
+
+        jQuery(document).ready(function() {
+            // Get the ul that holds the collection of tags
+            $collectionHolder = $('ul.productos');
+
+            // add the "add a tag" anchor and li to the tags ul
+            $collectionHolder.append($newLinkLi);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addTagLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addTagForm($collectionHolder, $newLinkLi);
+            });
+            
+            
+            
+            function addTagForm($collectionHolder, $newLinkLi) {
+                // Get the data-prototype explained earlier
+                var prototype = $collectionHolder.data('prototype');
+
+                // get the new index
+                var index = $collectionHolder.data('index');
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm = prototype.replace(/__name__/g, index);
+
+                // increase the index with one for the next item
+                $collectionHolder.data('index', index + 1);
+
+                // Display the form in the page in an li, before the "Add a tag" link li
+                var $newFormLi = $('<li></li>').append(newForm);
+                $newLinkLi.before($newFormLi);
+                addTagFormDeleteLink($newFormLi);
+            }
+        });
+        function addTagFormDeleteLink($tagFormLi) {
+            var $removeFormA = $('<input type="button" value="Borrar" class="btn btn-danger"><br />');
+            $tagFormLi.append($removeFormA);
+
+            $removeFormA.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // remove the li for the tag form
+                $tagFormLi.remove();
+        });
+}
+
+    </script>   
+    {{ parent() }}
+    {{ form_javascript(form) }}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "DepoBundle::layout.html.twig" %}
+
+{% block body -%}
+    <div class="container">
+        <h1>Edicion del transporte</h1>
+
+        {{ form(edit_form) }}
+
+        <ul class="record_actions">
+            <li>
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <a href="{{ path('transporte') }}">
+                    Volver a la lista
+                </a>
+            </li>            
+        </ul>
+    </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "DepoBundle::layout.html.twig" %}
+
+{% block body -%}
+    <div class="container">
+        <h3><b>Lista de Productos</b></h3>
+        <h4>&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-chevron-right"></span>&nbsp;&nbsp;&nbsp;{{ entity }}</h4>
+        <hr>
+        <br>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Stock Actual</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for key, prod in entity.stock %}
+                <tr>
+                    <td>{{ entity.producto(key) }}</td>
+                    <td>{{ prod }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        
+        <ul class="record_actions">
+            <li>
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <a href="{{ path('depo_homepage') }}">
+                    Volver a la lista
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}

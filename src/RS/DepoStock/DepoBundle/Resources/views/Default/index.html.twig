@@ -1,1 +1,49 @@
-Hello {{ name }}!
+{% extends "DepoBundle::layout.html.twig" %}
+
+{% block titulo %} Inicio{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <hr>
+        <h3>Pedidos</h3>
+        <table class="table">
+            {% for p in pedidos %}
+                <tr>
+                    <td colspan="2" class="success">{{p.fecha | date('d/m/Y')}} - {{p.cliente}}</td>
+                    {% for pro in p.productos %}
+                    <tr>
+                        {% if not pro.realizado %}
+                            <td>&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-chevron-right"></span>&nbsp;&nbsp;&nbsp;{{pro.producto}}</td>
+                            <td><b>{{pro.cantidad}}</b></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tr>
+            {% else %}
+                <tr><td>No existen pedidos cargados</td></tr>
+            {% endfor %}
+        </table>
+        <hr>
+        <h3>Stock</h3>
+        <table class="table">
+            {% for entity in entities %}
+                <tr>
+                    <td class="success">{{entity.deposito}}</td>
+                    <td class="success"></td>
+                    <td class="success" align="right">
+                        <span class="glyphicon glyphicon-arrow-right"></span><span class="glyphicon glyphicon-home">&nbsp;</span><a href="{{ path('ingreso_deposito', {'id' : entity.deposito.id})}}">Ingresar</a>
+                        &nbsp;&nbsp;<span class="glyphicon glyphicon-arrow-left"></span><span class="glyphicon glyphicon-home">&nbsp;</span><a href="{{ path('new_envio', {'id' : entity.deposito.id})}}">Despachar</a>
+                        &nbsp;&nbsp;<span class="glyphicon glyphicon-list-alt"></span>&nbsp;<a href="{{ path('show_deposito', {'id' : entity.deposito.id})}}">Listar</a>
+                    </td>
+                </tr>
+                    {% for key,cantidad in entity.deposito.stock %}
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-chevron-right"></span>&nbsp;&nbsp;&nbsp;{{ entity.deposito.producto(key) }}</td>
+                            <td><b>{{ cantidad }}</b></td>
+                            <td>&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;&nbsp;<a href="{{ path('list_producto', {'id' : key, 'idDeposito' : entity.deposito.id}) }}">Resumen</a></td>
+                        </tr>
+                    {% endfor %}
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

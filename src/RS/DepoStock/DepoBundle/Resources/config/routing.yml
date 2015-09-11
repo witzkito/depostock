@@ -1,3 +1,31 @@
 depo_homepage:
-    path:     /hello/{name}
+    path:     /
     defaults: { _controller: DepoBundle:Default:index }
+
+Ingreso:
+    resource: "@DepoBundle/Controller/IngresoController.php"
+    type:     annotation
+    
+Cliente:
+    resource: "@DepoBundle/Controller/ClienteController.php"
+    type:     annotation
+    
+Producto:
+    resource: "@DepoBundle/Controller/ProductoController.php"
+    type:     annotation
+    
+Pedido:
+    resource: "@DepoBundle/Controller/PedidoController.php"
+    type:     annotation
+    
+Transporte:
+    resource: "@DepoBundle/Controller/TransporteController.php"
+    type:     annotation
+    
+Envio:
+    resource: "@DepoBundle/Controller/EnvioController.php"
+    type:     annotation
+    
+Depsoito:
+    resource: "@DepoBundle/Controller/DepositoController.php"
+    type:     annotation

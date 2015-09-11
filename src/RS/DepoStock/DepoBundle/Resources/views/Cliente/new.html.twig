@@ -1,0 +1,18 @@
+{% extends "DepoBundle::layout.html.twig" %}
+
+{% block body -%}
+    <div class="container">
+        <h1>Creacion del cliente</h1>
+
+        {{ form(form) }}
+
+        <ul class="record_actions">
+            <li style="decoration">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <a href="{{ path('cliente') }}">
+                    Volver a la lista
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
