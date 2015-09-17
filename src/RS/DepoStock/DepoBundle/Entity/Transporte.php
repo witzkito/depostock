@@ -41,6 +41,20 @@ class Transporte
      * @ORM\Column(name="telefono", type="string", length=50, nullable = true)
      */
     private $telefono;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom_empresa", type="string", length=255, nullable = true)
+     */
+    private $nombreEmpresa;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tel_empresa", type="string", length=50, nullable = true)
+     */
+    private $telefonoEmpresa;
 
     /**
      * @var string
@@ -182,5 +196,51 @@ class Transporte
     public function getEmpresa()
     {
         return $this->empresa;
+    }
+
+    /**
+     * Set nombreEmpresa
+     *
+     * @param string $nombreEmpresa
+     * @return Transporte
+     */
+    public function setNombreEmpresa($nombreEmpresa)
+    {
+        $this->nombreEmpresa = $nombreEmpresa;
+
+        return $this;
+    }
+
+    /**
+     * Get nombreEmpresa
+     *
+     * @return string 
+     */
+    public function getNombreEmpresa()
+    {
+        return $this->nombreEmpresa;
+    }
+
+    /**
+     * Set telefonoEmpresa
+     *
+     * @param string $telefonoEmpresa
+     * @return Transporte
+     */
+    public function setTelefonoEmpresa($telefonoEmpresa)
+    {
+        $this->telefonoEmpresa = $telefonoEmpresa;
+
+        return $this;
+    }
+
+    /**
+     * Get telefonoEmpresa
+     *
+     * @return string 
+     */
+    public function getTelefonoEmpresa()
+    {
+        return $this->telefonoEmpresa;
     }
 }
