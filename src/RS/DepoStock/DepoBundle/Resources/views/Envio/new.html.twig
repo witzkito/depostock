@@ -16,17 +16,18 @@
             <table class="table">
                 {% if (pedidos | length) > 0 %}
                     <tr>
-                        <td colspan="1" class="success">{{pedidos[0].pedido.fecha | date('d/m/Y')}} - {{pedidos[0].pedido.cliente}}</td>
+                        <td class="success"></td>
                         <td class="success">Cantidad</td>
                         <td class="success">Precio</td>
                         <td class="success" colspan="2">Total</td>
                         {% for pro in pedidos %}
                         <tr>
                             {% if not pro.realizado %}
+                                <td class="success">{{pro.pedido.cliente}}</td>
                                 <td>&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-chevron-right"></span>{{pro.producto}}</td>
                                 <td><b>{{pro.cantidad}}</b></td>
-                                <td><b>u$s {{pro.producto.precio}}</b></td>
-                                <td><b>u$s {{pro.total}}</b></td>                                
+                                <td><b>$ {{pro.producto.precio}}</b></td>
+                                <td><b>$ {{pro.total}}</b></td>                                
                                 <td><input id="rs_depostock_depobundle_envio_{{pro.id}}" type="checkbox" value="1" name="rs_depostock_depobundle_envio[{{pro.id}}]"></td>
                             {% endif %}
                         </tr>
