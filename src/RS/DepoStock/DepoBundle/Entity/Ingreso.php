@@ -36,10 +36,10 @@ class Ingreso
     private $deposito;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Cliente", inversedBy="ingresos")
-     * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Transporte", inversedBy="ingresos")
+     * @ORM\JoinColumn(name="transporte_id", referencedColumnName="id")
      */
-    private $cliente;
+    private $transporte;
     
     /**
      * @ORM\OneToMany(targetEntity="IngresoProducto", mappedBy="ingreso", cascade={"persist", "remove"})
@@ -104,28 +104,6 @@ class Ingreso
     }
 
     /**
-     * Set cliente
-     *
-     * @param \RS\DepoStock\DepoBundle\Entity\Cliente $cliente
-     * @return Ingreso
-     */
-    public function setCliente(\RS\DepoStock\DepoBundle\Entity\Cliente $cliente = null)
-    {
-        $this->cliente = $cliente;
-
-        return $this;
-    }
-
-    /**
-     * Get cliente
-     *
-     * @return \RS\DepoStock\DepoBundle\Entity\Cliente 
-     */
-    public function getCliente()
-    {
-        return $this->cliente;
-    }
-    /**
      * Constructor
      */
     public function __construct()
@@ -168,4 +146,27 @@ class Ingreso
     }
     
 
+
+    /**
+     * Set transporte
+     *
+     * @param \RS\DepoStock\DepoBundle\Entity\Transporte $transporte
+     * @return Ingreso
+     */
+    public function setTransporte(\RS\DepoStock\DepoBundle\Entity\Transporte $transporte = null)
+    {
+        $this->transporte = $transporte;
+
+        return $this;
+    }
+
+    /**
+     * Get transporte
+     *
+     * @return \RS\DepoStock\DepoBundle\Entity\Transporte 
+     */
+    public function getTransporte()
+    {
+        return $this->transporte;
+    }
 }

@@ -68,6 +68,11 @@ class Transporte
      * @ORM\JoinColumn(name="empresa_id", referencedColumnName="id")
      */
     private $empresa;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Ingreso", mappedBy="transporte")
+     **/
+    private $ingresos;
 
     /**
      * Get id
@@ -242,5 +247,45 @@ class Transporte
     public function getTelefonoEmpresa()
     {
         return $this->telefonoEmpresa;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->ingresos = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add ingresos
+     *
+     * @param \RS\DepoStock\DepoBundle\Entity\Ingreso $ingresos
+     * @return Transporte
+     */
+    public function addIngreso(\RS\DepoStock\DepoBundle\Entity\Ingreso $ingresos)
+    {
+        $this->ingresos[] = $ingresos;
+
+        return $this;
+    }
+
+    /**
+     * Remove ingresos
+     *
+     * @param \RS\DepoStock\DepoBundle\Entity\Ingreso $ingresos
+     */
+    public function removeIngreso(\RS\DepoStock\DepoBundle\Entity\Ingreso $ingresos)
+    {
+        $this->ingresos->removeElement($ingresos);
+    }
+
+    /**
+     * Get ingresos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIngresos()
+    {
+        return $this->ingresos;
     }
 }

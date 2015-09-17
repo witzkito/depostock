@@ -15,11 +15,15 @@ class TransporteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre', null, array('attr' => array('placeholder' => 'Nombre del Tranporte')))
-            ->add('telefono', null, array('attr' => array('placeholder' => 'Telefono del Transporte'),
+            ->add('nombre', null, array('attr' => array('placeholder' => 'Nombre del Tranportista')))
+            ->add('telefono', null, array('attr' => array('placeholder' => 'Telefono del Transportista'),
                                            'required' => false))
             ->add('patente',null, array('attr' => array('placeholder' => 'Patente del Tranporte'),
                                             'required' => false))
+            ->add('nombreEmpresa', null, array('attr' => array('placeholder' => 'Nombre Empresa Transportista'),
+                                            'required' => false))
+            ->add('telefonoEmpresa', null, array('attr' => array('placeholder' => 'Telefono de la Empresa'),
+                                           'required' => false))
             ->add('tipo', 'choice', array(
                 'choices' => array("" => "Seleccionar Vehiculo", "Camion" => "Camion", "Camioneta" => "Camioneta"),
                 'required' => false
