@@ -31,7 +31,7 @@ class EnvioProducto
     /**
      * @var integer
      *
-     * @ORM\Column(name="confirmado", type="boolean", nullable = false)
+     * @ORM\Column(name="confirmado", type="boolean", nullable = true)
      */
     private $confirmado;
     
@@ -222,5 +222,14 @@ class EnvioProducto
     public function getConfirmado()
     {
         return $this->confirmado;
+    }
+    
+    /**
+     * Retorna el total del producto
+     * @return type
+     */
+    public function getTotal()
+    {
+        return $this->getCantidad() * $this->getPrecio();
     }
 }

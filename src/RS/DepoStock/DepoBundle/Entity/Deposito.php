@@ -75,6 +75,11 @@ class Deposito
     private $ingresos;
     
     /**
+     * @ORM\OneToMany(targetEntity="Caja", mappedBy="deposito")
+     **/
+    private $cajas;
+    
+    /**
      * @ORM\OneToMany(targetEntity="Envio", mappedBy="deposito")
      **/
     private $envios;
@@ -391,5 +396,53 @@ class Deposito
     public function getEnvios()
     {
         return $this->envios;
+    }
+
+    /**
+     * Add cajas
+     *
+     * @param \RS\DepoStock\DepoBundle\Entity\Caja $cajas
+     * @return Deposito
+     */
+    public function addCaja(\RS\DepoStock\DepoBundle\Entity\Caja $cajas)
+    {
+        $this->cajas[] = $cajas;
+
+        return $this;
+    }
+
+    /**
+     * Remove cajas
+     *
+     * @param \RS\DepoStock\DepoBundle\Entity\Caja $cajas
+     */
+    public function removeCaja(\RS\DepoStock\DepoBundle\Entity\Caja $cajas)
+    {
+        $this->cajas->removeElement($cajas);
+    }
+
+    /**
+     * Get cajas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCajas()
+    {
+        return $this->cajas;
+    }
+    
+    /**
+     * Funcion q' devuelve la cantidad total en la caja
+     * @return type
+     */
+    public function totalCaja()
+    {
+        $retornar = 0;
+        foreach ($this->cajas as $caja)
+        {
+            $retornar = $retornar + $caja->getIngreso();
+            $retornar = $retornar - $caja->getEgreso();
+        }
+        return $retornar;
     }
 }

@@ -233,6 +233,10 @@ class Envio
                 $retornar = $retornar + ($producto->getCantidad() * $producto->getPrecio());
             }
         }
+        foreach ($this->gastos as $gasto)
+        {
+            $retornar = $retornar - $gasto->getCantidad();
+        }
         return $retornar;
     }
     

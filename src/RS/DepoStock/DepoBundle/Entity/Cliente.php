@@ -63,11 +63,6 @@ class Cliente
     private $empresa;
     
     /**
-     * @ORM\OneToMany(targetEntity="Ingreso", mappedBy="cliente")
-     **/
-    private $ingresos;
-    
-    /**
      * @ORM\OneToMany(targetEntity="Pedido", mappedBy="cliente")
      **/
     private $pedidos;
@@ -209,40 +204,7 @@ class Cliente
     {
         $this->ingresos = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
-    /**
-     * Add ingresos
-     *
-     * @param \RS\DepoStock\DepoBundle\Entity\Ingreso $ingresos
-     * @return Cliente
-     */
-    public function addIngreso(\RS\DepoStock\DepoBundle\Entity\Ingreso $ingresos)
-    {
-        $this->ingresos[] = $ingresos;
-
-        return $this;
-    }
-
-    /**
-     * Remove ingresos
-     *
-     * @param \RS\DepoStock\DepoBundle\Entity\Ingreso $ingresos
-     */
-    public function removeIngreso(\RS\DepoStock\DepoBundle\Entity\Ingreso $ingresos)
-    {
-        $this->ingresos->removeElement($ingresos);
-    }
-
-    /**
-     * Get ingresos
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getIngresos()
-    {
-        return $this->ingresos;
-    }
-
+    
     /**
      * Set empresa
      *
