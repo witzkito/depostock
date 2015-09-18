@@ -1,0 +1,18 @@
+{% extends "DepoBundle::layout.html.twig" %}
+
+{% block body -%}
+    <div class="container">
+    <h1>Nuevo Movimiento en {{deposito.nombre}}</h1>
+    <form role="form" action="{{ path('caja_create', {'id' : deposito.id}) }}" method="POST" name="rs_depostock_depobundle_caja">
+    
+        {{ form_rest(form) }}
+
+        <ul class="record_actions">
+    <li>
+        <span class="glyphicon glyphicon-chevron-left"></span>
+        <a href="{{ path('caja', {'id' : deposito.id}) }}">
+            Volver a la lista
+        </a>
+    </li>
+</ul>
+{% endblock %}

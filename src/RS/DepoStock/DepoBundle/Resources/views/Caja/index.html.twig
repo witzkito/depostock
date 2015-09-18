@@ -1,0 +1,42 @@
+{% extends "DepoBundle::layout.html.twig" %}
+
+{% block body -%}
+    <div class="container">
+        <h1>Caja deposito {{deposito.nombre}}</h1>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Ingreso</th>
+                    <th>Egreso</th>
+                    <th>Saldo</th>
+                    <th>Descripcion</th>
+                    <th></th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{% if entity.fecha %}{{ entity.fecha|date('d/m/Y H:i') }}{% endif %}</td>
+                    <td>{% if entity.ingreso != 0 %}{{entity.ingreso}}{% endif %}</td>
+                    <td>{% if entity.egreso != 0 %}{{entity.egreso}}{% endif %}</td>
+                    <td>{{ entity.saldo }}</td>
+                    <td>{{ entity.descripcion }}</td>
+                    <td><a href="{{ entity.url }}">Ver</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+            <ul class="record_actions">
+            <li>
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                <a href="{{ path('caja_new', { 'id' : deposito.id}) }}">
+                    Crear nuevo movimiento
+                </a>
+            </li>
+        </ul>
+    </div>
+    {% endblock %}

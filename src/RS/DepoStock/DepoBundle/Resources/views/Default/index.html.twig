@@ -5,6 +5,19 @@
 {% block body %}
     <div class="container">
         <hr>
+        <table class="table">
+            
+                {% for entity in entities %}
+                    <tr>
+                        <th class="success">Caja: {{entity.deposito.nombre}}</th>
+                        <td style="width:30%; min-width:30%; ">&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-chevron-right"></span>&nbsp;&nbsp;&nbsp;$ {{entity.deposito.totalCaja}}</td>
+                        <td align="left">&nbsp;&nbsp;<span class="glyphicon glyphicon-list-alt"></span>&nbsp;<a href="{{ path('caja', {'id' : entity.deposito.id})}}">Listar</a></td>
+                    </tr>
+                {% endfor %}
+            
+        </table>
+        <hr>
+        <hr>
         <h3>Pedidos</h3>
         <table class="table">
             {% for p in pedidos %}

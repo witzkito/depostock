@@ -11,6 +11,7 @@ use RS\DepoStock\DepoBundle\Form\EnvioType;
 use RS\DepoStock\DepoBundle\Entity\EnvioProducto;
 use Symfony\Component\HttpFoundation\Request;
 use RS\DepoStock\DepoBundle\Form\EnvioGastoType;
+use RS\DepoStock\DepoBundle\Entity\Caja;
 
 class EnvioController extends Controller
 {
@@ -62,8 +63,7 @@ class EnvioController extends Controller
             $em->persist($envio);
             $em->flush();
             return $this->redirect($this->generateUrl('show_envio', array('id' => $envio->getId())));
-        }        
-            
+        } 
         return array(
                 "deposito" => $deposito,
                 "pedidos" => $arrayPedido,
@@ -181,7 +181,7 @@ class EnvioController extends Controller
         $em = $this->get('doctrine')->getManager();
         $envio= $em->getRepository('DepoBundle:Envio')->find($id);
         $form = $this->createForm(new EnvioGastoType());
-        ld($form->setData(array('gastos' => $envio->getGastos())));
+        $form->setData(array('gastos' => $envio->getGastos()));
         $arrayProductos = array();
         foreach ($envio->getProductos() as $prod)
         {
@@ -196,20 +196,70 @@ class EnvioController extends Controller
         if ($request->getMethod() == 'POST'){
             $form->bind($request);
             $data = $form->getData();
+            $totalGastoAnterior = 0;
             foreach($envio->getGastos() as $gasto){
-                $em->remove($gasto);
+                $totalGastoAnterior = $totalGastoAnterior + $gasto->getCantidad();
             }
-            $em->flush();
+            $totalGastos = 0;
             foreach ($data['gastos'] as $gasto){
-                $envio->addGasto($gasto);
-                $gasto->setEnvio($envio);
-                $em->persist($gasto);
-            }            
+                $totalGastos = $totalGastos + $gasto->getCantidad();
+            }
+            if ($totalGastos != $totalGastoAnterior){
+                foreach($envio->getGastos() as $gasto){
+                    $em->remove($gasto);
+                }
+                $em->flush();
+                foreach ($data['gastos'] as $gasto){
+                    $envio->addGasto($gasto);
+                    $gasto->setEnvio($envio);
+                    $em->persist($gasto);
+                }
+                $caja = new Caja();
+                $caja->setDeposito($envio->getDeposito());
+                $caja->setFecha(new \DateTime('now'));
+                $caja->setEnlace($this->generateUrl('show_envio', array('id' => $envio->getId())));
+                    
+                if ($totalGastoAnterior == 0){
+                    $caja->setDescripcion("Gastos de envio transporte ". $envio->getTransporte()->getNombre());
+                    $caja->setIngreso(0);
+                    $caja->setEgreso($totalGastos - $totalGastoAnterior);                    
+                }else{
+                    $caja->setDescripcion("Cambio en los Gastos de envio transporte ". $envio->getTransporte()->getNombre());
+                    if (($totalGastos - $totalGastoAnterior) < 0){
+                        $caja->setIngreso($totalGastoAnterior - $totalGastos);
+                        $caja->setEgreso(0);
+                    }else{
+                        $caja->setIngreso(0);
+                        $caja->setEgreso($totalGastos - $totalGastoAnterior);
+                    }
+                }
+                $em->persist($caja);
+                $em->flush();
+            }           
+                  
             foreach ($envio->getProductos() as $prod){
+               
+                $caja = new Caja();
+                $caja->setDeposito($envio->getDeposito());
+                $caja->setFecha(new \DateTime('now'));
+                $caja->setEnlace($this->generateUrl('show_envio', array('id' => $envio->getId())));
+                if ($data[$prod->getId()] != $prod->getConfirmado()){
+                    if ($data[$prod->getId()]){
+                        $caja->setDescripcion("Venta a ". $prod->getCliente()->getNombre() . " de " . $prod->getProducto()->getNombre());
+                        $caja->setIngreso($prod->getTotal());
+                        $caja->setEgreso(0);
+                    }else{
+                        $caja->setDescripcion("Cancelacion Venta a ". $prod->getCliente()->getNombre(). " de " . $prod->getProducto()->getNombre());
+                        $caja->setIngreso(0);
+                        $caja->setEgreso($prod->getTotal());
+                    }
+                    $em->persist($caja);
+                }
                 $prod->setConfirmado($data[$prod->getId()]);
                 $em->persist($prod); 
-            }
                 
+            }
+            
             $em->persist($envio);            
             $em->flush();
             return $this->redirect($this->generateUrl('show_envio', array('id' => $envio->getId())));

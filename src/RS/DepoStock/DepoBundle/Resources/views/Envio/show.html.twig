@@ -4,17 +4,17 @@
     <div class="container">
             <h1>Envio</h1>
 
-            <table class="table table-striped">
+            <table class="table">
                 <tbody>
                     <tr>                        
-                        <th>Fecha</th>
-                        <td colspan="6">{{ entity.fecha|date('Y-m-d H:i:s') }}</td>
+                        <th class="success">Fecha</th>
+                        <td class="success" colspan="6">{{ entity.fecha|date('Y-m-d H:i:s') }}</td>
                     </tr>
                     <tr>
-                        <th>Transportista</th>
-                        <td colspan="6">{{ entity.transporte }}</td>
+                        <th class="success">Transportista</th>
+                        <td class="success" colspan="6">{{ entity.transporte }}</td>
                     </tr>
-                    {% set total = 0 %}
+                    {% set totalIngreso = 0 %}
                     {% for producto in entity.productos %}
                         <tr>
                             <td></td>
@@ -26,13 +26,14 @@
                             <td>
                                 {% if producto.confirmado %}
                                     <span class="glyphicon glyphicon-ok"></span>
-                                    {% set total = total + (producto.cantidad * producto.precio) %}
                                 {% else %}
                                     <span class="glyphicon glyphicon-remove"></span>
                                 {% endif %}
                             </td>
-                        </tr>    
+                        </tr>
+                        {% set totalIngreso = totalIngreso + (producto.cantidad * producto.precio) %}
                     {% endfor %}
+                    {% set totalEgreso = 0 %}
                     {% for gasto in entity.gastos %}
                         <tr>
                             <td></td>
@@ -40,16 +41,20 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>${{gasto.cantidad}}</td>
-                            
+                            <td>- ${{gasto.cantidad}}</td>
+                            {% set totalEgreso = totalEgreso + gasto.cantidad %}
                             <td>
-                                {% set total = total + gasto.cantidad %}
+                                
                             </td>
                         </tr>
                     {% endfor %}
                     <tr>
                         <th class="success" colspan="5">Total</th>
-                        <td class="success" colspan="3">${{total}}</td>
+                        {% if entity.completado %}
+                            <th class="success" colspan="3">${{entity.total}}</td>
+                        {% else %}
+                            <td class="success" colspan="3">ENVIO SIN COMPLETAR</td>
+                        {% endif %}
                     </tr>
                 </tbody>
             </table>

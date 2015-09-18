@@ -1,0 +1,52 @@
+{% extends "DepoBundle::layout.html.twig" %}
+
+{% block body -%}
+    <div class="container">
+    <h1>Caja</h1>
+
+    <table class="table table-stripped">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Fecha</th>
+                <td>{{ entity.fecha|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Ingreso</th>
+                <td>$ {{ entity.ingreso }}</td>
+            </tr>
+            <tr>
+                <th>Egreso</th>
+                <td>$ {{ entity.egreso }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ entity.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Enlace</th>
+                <td><a href="{{ entity.enlace }}" >Ver</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul class="record_actions">
+        <li>
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <a href="{{ path('caja', {'id' : entity.deposito.id}) }}">
+                Volver a la lista
+            </a>
+        </li>
+        <li>
+            <span class=" glyphicon glyphicon-floppy-disk"></span>
+            <a href="{{ path('caja_edit', { 'id': entity.id }) }}">
+                Editar
+            </a>
+        </li>
+        <li>{{ form(delete_form) }}</li>
+    </ul>
+    </div>
+{% endblock %}
