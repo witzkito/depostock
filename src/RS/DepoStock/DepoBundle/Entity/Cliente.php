@@ -71,6 +71,11 @@ class Cliente
      * @ORM\OneToMany(targetEntity="EnvioProducto", mappedBy="cliente")
      **/
     private $enviosProductos;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="CuentaCorriente", mappedBy="cliente")
+     **/
+    private $cuentascorrientes;
 
 
     /**
@@ -312,5 +317,52 @@ class Cliente
     public function getEnviosProductos()
     {
         return $this->enviosProductos;
+    }
+
+    /**
+     * Add cuentascorrientes
+     *
+     * @param \RS\DepoStock\DepoBundle\Entity\CuentaCorriente $cuentascorrientes
+     * @return Cliente
+     */
+    public function addCuentascorriente(\RS\DepoStock\DepoBundle\Entity\CuentaCorriente $cuentascorrientes)
+    {
+        $this->cuentascorrientes[] = $cuentascorrientes;
+
+        return $this;
+    }
+
+    /**
+     * Remove cuentascorrientes
+     *
+     * @param \RS\DepoStock\DepoBundle\Entity\CuentaCorriente $cuentascorrientes
+     */
+    public function removeCuentascorriente(\RS\DepoStock\DepoBundle\Entity\CuentaCorriente $cuentascorrientes)
+    {
+        $this->cuentascorrientes->removeElement($cuentascorrientes);
+    }
+
+    /**
+     * Get cuentascorrientes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCuentascorrientes()
+    {
+        return $this->cuentascorrientes;
+    }
+    
+    /**
+     * Funcion que retornar la cantidad adeudada por un cliente
+     * @return number
+     */
+    public function getCuentaTotal()
+    {
+        $retornar = 0;
+        foreach ($this->cuentascorrientes as $cuenta)
+        {
+            $retornar = $retornar + ($cuenta->getIngreso() - $cuenta->getEgreso());
+        }
+        return $retornar;
     }
 }

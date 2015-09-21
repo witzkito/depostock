@@ -1,0 +1,28 @@
+{% extends "DepoBundle::layout.html.twig" %}
+
+{% block body -%}
+    <h1>Cuenta Corriente {{cliente.nombre}}</h1>
+
+    <table class="table table-striped">
+        <tbody>
+            {% for cuenta in entity %}
+            <tr>
+                <td>{{ cuenta.fecha | date('d/m/Y H:i')}}</td>
+                <td>{{ cuenta.ingreso }}</td>
+                <td>{{ cuenta.egreso }}</td>
+                <td>{{ cuenta.saldo }}</td>
+                <td>{{ cuenta.descripcion }}</td>
+                <td>{{ cuenta.url }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('cuentacorriente') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+{% endblock %}

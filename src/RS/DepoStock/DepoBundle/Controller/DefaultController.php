@@ -13,6 +13,7 @@ class DefaultController extends Controller
         $entities = $em->getRepository('DepoBundle:UsuarioDeposito')->findBy(array('usuario' => $user->getId()));
         $empresa = $entities[0]->getDeposito()->getEmpresa();
         $pedidos = $empresa->getPedidos();
-        return $this->render('DepoBundle:Default:index.html.twig', array("entities" => $entities, "pedidos" => $pedidos));
+        $clientes = $empresa->getClientesConCuentas();
+        return $this->render('DepoBundle:Default:index.html.twig', array("entities" => $entities, "pedidos" => $pedidos, "clientes" => $clientes));
     }
 }

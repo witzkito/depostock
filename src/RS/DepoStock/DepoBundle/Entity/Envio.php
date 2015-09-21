@@ -230,7 +230,7 @@ class Envio
         foreach ($this->productos as $producto)
         {
             if ($producto->getConfirmado()){
-                $retornar = $retornar + ($producto->getCantidad() * $producto->getPrecio());
+                $retornar = $retornar + ($producto->getPagado());
             }
         }
         foreach ($this->gastos as $gasto)

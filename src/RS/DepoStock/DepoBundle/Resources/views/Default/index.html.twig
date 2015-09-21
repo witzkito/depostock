@@ -58,5 +58,28 @@
                     {% endfor %}
             {% endfor %}
         </table>
+        
+        {% if (clientes | length) > 0 %}
+        <hr>
+        <h3>Cuentas Corrientes</h3>
+        <table class="table">
+            <tr>
+                    <td class="success">Nombre Cliente</td>
+                    <td class="success">Total</td>
+                    <td class="success" align="right">
+                        
+                    </td>
+            </tr>
+            {% for cli in clientes %}
+                {% if cli.cuentaTotal > 0 %}
+                    <tr>
+                        <td>{{ cli.nombre}}</td>
+                        <td><b>$ {{ cli.cuentaTotal }}</b></td>
+                        <td>&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;&nbsp;<a href="{{ path('cuentacorriente_show', { 'id' : cli.id }) }}">Resumen</a></td>
+                    </tr>                    
+                {% endif %}
+            {% endfor %}
+        </table>
+        {% endif %}
     </div>
 {% endblock %}

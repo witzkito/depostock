@@ -270,4 +270,20 @@ class Empresa
     {
         $this->pedidos->removeElement($pedidos);
     }
+    
+    /**
+     * Devuelve una lista de clientes con cuentas corrientes > 0
+     * @return array
+     */
+    public function getClientesConCuentas(){
+        $retornar = array();
+        foreach ($this->clientes as $cli)
+        {
+            if ($cli->getCuentaTotal() > 0)
+            {
+                $retornar[$cli->getId()] = $cli;
+            }
+        }
+        return $retornar;
+    }
 }

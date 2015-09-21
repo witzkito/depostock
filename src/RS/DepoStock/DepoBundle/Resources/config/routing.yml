@@ -33,3 +33,7 @@ Depsoito:
 Caja:
     resource: "@DepoBundle/Controller/CajaController.php"
     type:     annotation
+
+CuentaCorriente:
+    resource: "@DepoBundle/Controller/CuentaCorrienteController.php"
+    type:     annotation

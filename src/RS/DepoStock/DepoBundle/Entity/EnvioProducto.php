@@ -37,9 +37,15 @@ class EnvioProducto
     
     /**
      * @var decimal
-     * @ORM\Column(name="precio", type="decimal")
+     * @ORM\Column(name="precio", type="decimal", nullable = true)
      */
     private $precio;
+    
+    /**
+     * @var decimal
+     * @ORM\Column(name="pagado", type="decimal", nullable = true)
+     */
+    private $pagado;
     
     /**
      * @ORM\ManyToOne(targetEntity="Producto", inversedBy="envios")
@@ -231,5 +237,28 @@ class EnvioProducto
     public function getTotal()
     {
         return $this->getCantidad() * $this->getPrecio();
+    }
+
+    /**
+     * Set pagado
+     *
+     * @param string $pagado
+     * @return EnvioProducto
+     */
+    public function setPagado($pagado)
+    {
+        $this->pagado = $pagado;
+
+        return $this;
+    }
+
+    /**
+     * Get pagado
+     *
+     * @return string 
+     */
+    public function getPagado()
+    {
+        return $this->pagado;
     }
 }

@@ -12,6 +12,7 @@ use RS\DepoStock\DepoBundle\Entity\EnvioProducto;
 use Symfony\Component\HttpFoundation\Request;
 use RS\DepoStock\DepoBundle\Form\EnvioGastoType;
 use RS\DepoStock\DepoBundle\Entity\Caja;
+use RS\DepoStock\DepoBundle\Entity\CuentaCorriente;
 
 class EnvioController extends Controller
 {
@@ -186,10 +187,11 @@ class EnvioController extends Controller
         foreach ($envio->getProductos() as $prod)
         {
             if ($prod->getConfirmado()){
-                $form->add($prod->getId(), "checkbox", array('required' => false, "attr" => array( 'checked' => true)));
+                $form->add("conf_".$prod->getId(), "checkbox", array('required' => false, "attr" => array( 'checked' => true)));
             }else{
-                $form->add($prod->getId(), "checkbox", array('required' => false));
+                $form->add("conf_".$prod->getId(), "checkbox", array('required' => false));
             }
+            $form->add("cant_".$prod->getId(), "text", array('required' => false, 'data' => $prod->getPagado()));
             $arrayProductos[] = $prod;
         }
         $request = $this->get('request');
@@ -239,25 +241,160 @@ class EnvioController extends Controller
                   
             foreach ($envio->getProductos() as $prod){
                
-                $caja = new Caja();
+                /*$caja = new Caja();
                 $caja->setDeposito($envio->getDeposito());
                 $caja->setFecha(new \DateTime('now'));
                 $caja->setEnlace($this->generateUrl('show_envio', array('id' => $envio->getId())));
-                if ($data[$prod->getId()] != $prod->getConfirmado()){
-                    if ($data[$prod->getId()]){
+                if ($data['conf_' . $prod->getId()] != $prod->getConfirmado()){
+                    if ($data['conf_' . $prod->getId()]){
                         $caja->setDescripcion("Venta a ". $prod->getCliente()->getNombre() . " de " . $prod->getProducto()->getNombre());
-                        $caja->setIngreso($prod->getTotal());
+                        $caja->setIngreso($data['cant_' . $prod->getId()]);
                         $caja->setEgreso(0);
                     }else{
                         $caja->setDescripcion("Cancelacion Venta a ". $prod->getCliente()->getNombre(). " de " . $prod->getProducto()->getNombre());
                         $caja->setIngreso(0);
-                        $caja->setEgreso($prod->getTotal());
+                        $caja->setEgreso($data['cant_' . $prod->getId()]);
+                    }
+                    $em->persist($caja);
+                }else{
+                    if ($data['cant_' . $prod->getId()] != $prod->getPagado()){
+                        $diferencia = $data['cant_' . $prod->getId()] - $prod->getPagado();
+                        if ($diferencia > 0){
+                            $caja->setDescripcion("Cambio cantidad pagado Venta a ". $prod->getCliente()->getNombre() . " de " . $prod->getProducto()->getNombre());
+                            $caja->setIngreso($diferencia);
+                            $caja->setEgreso(0);
+                            
+                        }else{
+                            $caja->setDescripcion("Cambio cantidad pagado Venta a ". $prod->getCliente()->getNombre() . " de " . $prod->getProducto()->getNombre());
+                            $caja->setIngreso(0);
+                            $caja->setEgreso(abs($diferencia));
+                        }
+                    }
+                    if ($data['cant_' . $prod->getId()] != $prod->getTotal()){
+                        $diferencia = $prod->getTotal() - $data['cant_' . $prod->getId()];
+                        $cuentaCorriente = new CuentaCorriente();
+                        $cuentaCorriente->setCliente($prod->getCliente());
+                        $cuentaCorriente->setDescripcion("Venta de " . $prod->getProducto()->getNombre());
+                        $cuentaCorriente->setIngreso($diferencia);
+                        $cuentaCorriente->setEgreso(0);
+                        $cuentaCorriente->setFecha(new \DateTime('now'));
+                        $cuentaCorriente->setEnlace($this->generateUrl('show_envio', array('id' => $envio->getId())));
+                        $em->persist($cuentaCorriente);
                     }
                     $em->persist($caja);
                 }
-                $prod->setConfirmado($data[$prod->getId()]);
-                $em->persist($prod); 
+                $prod->setPagado($data['cant_' . $prod->getId()]);
+                $prod->setConfirmado($data['conf_' . $prod->getId()]);
+                $em->persist($prod);*/ 
                 
+                $caja = new Caja();
+                $caja->setDeposito($envio->getDeposito());
+                $caja->setFecha(new \DateTime('now'));
+                $caja->setEnlace($this->generateUrl('show_envio', array('id' => $envio->getId())));
+                
+                if ($data['cant_' . $prod->getId()] == null)
+                {
+                    $data['cant_' . $prod->getId()] = 0;
+                }
+                
+                if ($data['conf_' . $prod->getId()]){
+                    if ($prod->getEnvio()->getCompletado()){
+                        $diferencia = $data['cant_' . $prod->getId()] - $prod->getTotal();
+                        if ($diferencia != 0){
+                            $difPagado = $data['cant_' . $prod->getId()] - $prod->getPagado();
+                            if ($diferencia < 0){
+                                //a caja la diferencia
+                                $caja->setDescripcion("Cambio en Venta a ". $prod->getCliente()->getNombre() . " de " . $prod->getProducto()->getNombre());
+                                $caja->setIngreso($difPagado);
+                                $caja->setEgreso(0);
+                                // restar de cuenta corriente
+                                $cuentaCorriente = new CuentaCorriente();
+                                $cuentaCorriente->setCliente($prod->getCliente());
+                                $cuentaCorriente->setDescripcion("Cambio Venta a ". $prod->getCliente()->getNombre(). " de " . $prod->getProducto()->getNombre());
+                                $cuentaCorriente->setEgreso($difPagado);
+                                $cuentaCorriente->setIngreso(0);
+                                $cuentaCorriente->setEnlace($this->generateUrl('show_envio', array('id' => $envio->getId())));
+                                $cuentaCorriente->setFecha(new \DateTime('now'));
+                                $em->persist($cuentaCorriente);
+                                $em->persist($caja);
+                            }else{
+                                $caja->setDescripcion("Cambio Venta a ". $prod->getCliente()->getNombre(). " de " . $prod->getProducto()->getNombre());
+                                $caja->setIngreso(0);
+                                $caja->setEgreso($difPagado);
+                                
+                                // sumar cuenta corriente
+                                $cuentaCorriente = new CuentaCorriente();
+                                $cuentaCorriente->setCliente($prod->getCliente());
+                                $cuentaCorriente->setDescripcion("Cambio Venta a ". $prod->getCliente()->getNombre(). " de " . $prod->getProducto()->getNombre());
+                                $cuentaCorriente->setEgreso(0);
+                                $cuentaCorriente->setIngreso($difPagado);
+                                $cuentaCorriente->setEnlace($this->generateUrl('show_envio', array('id' => $envio->getId())));
+                                $cuentaCorriente->setFecha(new \DateTime('now'));
+                                $em->persist($cuentaCorriente);
+                                $em->persist($caja);
+                            }
+                        }else{
+                            $difPagado = $data['cant_' . $prod->getId()] - $prod->getPagado();
+                            
+                            $caja->setDescripcion("Cambio en Venta a ". $prod->getCliente()->getNombre() . " de " . $prod->getProducto()->getNombre());
+                            $caja->setIngreso($difPagado);
+                            $caja->setEgreso(0);
+                            $cuentaCorriente = new CuentaCorriente();
+                            $cuentaCorriente->setCliente($prod->getCliente());
+                            $cuentaCorriente->setDescripcion("Cambio Venta a ". $prod->getCliente()->getNombre(). " de " . $prod->getProducto()->getNombre());
+                            $cuentaCorriente->setEgreso($difPagado);
+                            $cuentaCorriente->setIngreso(0);
+                            $cuentaCorriente->setEnlace($this->generateUrl('show_envio', array('id' => $envio->getId())));
+                            $cuentaCorriente->setFecha(new \DateTime('now'));
+                            $em->persist($cuentaCorriente);
+                            $em->persist($caja);
+                            
+                        }
+                    }else{
+                        if ($data['cant_' . $prod->getId()] != $prod->getTotal()){
+                            $diferencia = $prod->getTotal() - $data['cant_' . $prod->getId()];
+                            $caja->setDescripcion("Venta a ". $prod->getCliente()->getNombre() . " de " . $prod->getProducto()->getNombre());
+                            $caja->setIngreso($data['cant_' . $prod->getId()]);
+                            $caja->setEgreso(0);
+                            
+                            $cuentaCorriente = new CuentaCorriente();
+                            $cuentaCorriente->setCliente($prod->getCliente());
+                            $cuentaCorriente->setDescripcion("Venta a ". $prod->getCliente()->getNombre(). " de " . $prod->getProducto()->getNombre());
+                            $cuentaCorriente->setEgreso(0);
+                            $cuentaCorriente->setIngreso($diferencia);
+                            $cuentaCorriente->setEnlace($this->generateUrl('show_envio', array('id' => $envio->getId())));
+                            $cuentaCorriente->setFecha(new \DateTime('now'));
+                            $em->persist($cuentaCorriente);
+                            $em->persist($caja);
+                        }else{
+                            $caja->setDescripcion("Venta a ". $prod->getCliente()->getNombre() . " de " . $prod->getProducto()->getNombre());
+                            $caja->setIngreso($data['cant_' . $prod->getId()]);
+                            $caja->setEgreso(0);
+                            $em->persist($caja);
+                        }
+                    }
+                    
+                }else{
+                    if ($prod->getEnvio()->getCompletado()){
+                       $caja->setDescripcion("Cancelacion Venta a ". $prod->getCliente()->getNombre(). " de " . $prod->getProducto()->getNombre());
+                       $caja->setIngreso(0);
+                       $caja->setEgreso($prod->getPagado());
+                       
+                       $diferencia = $prod->getTotal() - $prod->getPagado();
+                       $cuentaCorriente = new CuentaCorriente();
+                       $cuentaCorriente->setCliente($prod->getCliente());
+                       $cuentaCorriente->setDescripcion("Cancelacion Venta a ". $prod->getCliente()->getNombre(). " de " . $prod->getProducto()->getNombre());
+                       $cuentaCorriente->setEgreso($diferencia);
+                       $cuentaCorriente->setIngreso(0);
+                       $cuentaCorriente->setEnlace($this->generateUrl('show_envio', array('id' => $envio->getId())));
+                       $cuentaCorriente->setFecha(new \DateTime('now'));
+                       $em->persist($cuentaCorriente);
+                       $em->persist($caja);
+                       
+                    }
+                }
+                $prod->setPagado($data['cant_' . $prod->getId()]);
+                $prod->setConfirmado($data['conf_' . $prod->getId()]);
             }
             
             $em->persist($envio);            
