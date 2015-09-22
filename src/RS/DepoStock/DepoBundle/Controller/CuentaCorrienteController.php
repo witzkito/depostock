@@ -29,7 +29,7 @@ class CuentaCorrienteController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('DepoBundle:CuentaCorriente')->findAll();
+        $entities = $em->getRepository('DepoBundle:Cliente')->findAll();
 
         return array(
             'entities' => $entities,
@@ -38,22 +38,25 @@ class CuentaCorrienteController extends Controller
     /**
      * Creates a new CuentaCorriente entity.
      *
-     * @Route("/", name="cuentacorriente_create")
+     * @Route("/crear/cuentacorriente/{id}", name="cuentacorriente_create")
      * @Method("POST")
      * @Template("DepoBundle:CuentaCorriente:new.html.twig")
      */
-    public function createAction(Request $request)
+    public function createAction($id, Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
         $entity = new CuentaCorriente();
+        $cliente = $em->getRepository("DepoBundle:Cliente")->find($id);
+        $entity->setCliente($cliente);
+        $entity->setFecha(new \DateTime("NOW"));
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('cuentacorriente_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('cuentacorriente_show', array('id' => $entity->getCliente()->getId())));
         }
 
         return array(
@@ -72,11 +75,11 @@ class CuentaCorrienteController extends Controller
     private function createCreateForm(CuentaCorriente $entity)
     {
         $form = $this->createForm(new CuentaCorrienteType(), $entity, array(
-            'action' => $this->generateUrl('cuentacorriente_create'),
+            'action' => $this->generateUrl('cuentacorriente_create', array('id' => $entity->getCliente()->getId())),
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Crear'));
 
         return $form;
     }
@@ -84,18 +87,22 @@ class CuentaCorrienteController extends Controller
     /**
      * Displays a form to create a new CuentaCorriente entity.
      *
-     * @Route("/new", name="cuentacorriente_new")
+     * @Route("/new/{id}", name="cuentacorriente_new")
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
+    public function newAction($id)
     {
+        $em = $this->getDoctrine()->getManager();
+        $cliente = $em->getRepository('DepoBundle:Cliente')->find($id);
         $entity = new CuentaCorriente();
+        $entity->setCliente($cliente);
+        $entity->setFecha(new \DateTime('NOW'));
         $form   = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form'   => $form->createView()
         );
     }
 

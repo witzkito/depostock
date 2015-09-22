@@ -279,7 +279,7 @@ class ProductoController extends Controller
             {
                 if ($ingreso->isDeposito($idDeposito)){
                     $retornar[$ingreso->getIngreso()->getFecha()->getTimeStamp()]['fecha'] = $ingreso->getIngreso()->getFecha();
-                    $retornar[$ingreso->getIngreso()->getFecha()->getTimeStamp()]['cliente'] = $ingreso->getIngreso()->getCliente();
+                    $retornar[$ingreso->getIngreso()->getFecha()->getTimeStamp()]['cliente'] = $ingreso->getIngreso()->getTransporte();
                     $retornar[$ingreso->getIngreso()->getFecha()->getTimeStamp()]['entrada'] = $ingreso->getCantidad();
                     $retornar[$ingreso->getIngreso()->getFecha()->getTimeStamp()]['salida'] = "";
                     $stock = $stock + ($ingreso->getCantidad());

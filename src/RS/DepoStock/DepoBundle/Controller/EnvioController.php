@@ -31,7 +31,7 @@ class EnvioController extends Controller
         foreach ($pedidos as $pedido){
             foreach ($pedido->getProductos() as $producto)
             {
-                if ($deposito->tieneProducto($producto->getProducto())){
+                if ($deposito->tieneProducto($producto)){
                     $form->add($producto->getId(), "checkbox", array('required' => 'false'));
                     $arrayPedido[] = $producto;
                 }

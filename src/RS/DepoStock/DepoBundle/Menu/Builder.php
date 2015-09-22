@@ -22,6 +22,8 @@ class Builder extends ContainerAware
         $menu->addChild('Transportes', array('route' => 'transporte'));
         
         $menu->addChild('Envios', array('route' => 'envio'));
+        
+        $menu->addChild('Cuentas Corrientes', array('route' => 'cuentacorriente'));
 
         return $menu;
     }

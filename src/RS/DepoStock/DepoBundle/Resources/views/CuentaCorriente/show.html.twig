@@ -1,9 +1,20 @@
 {% extends "DepoBundle::layout.html.twig" %}
 
 {% block body -%}
+    <div class="container">
     <h1>Cuenta Corriente {{cliente.nombre}}</h1>
 
     <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="success">Fecha</th>
+                <th class="success">Ingreso</th>
+                <th class="success">Egreso</th>
+                <th class="success">Saldo</th>
+                <th class="success">Detalle</th>
+                <th class="success">Enlace</th>
+            </tr>
+        </thead>
         <tbody>
             {% for cuenta in entity %}
             <tr>
@@ -18,11 +29,19 @@
         </tbody>
     </table>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('cuentacorriente') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+    <ul class="record_actions">
+        <li>
+            <span class="glyphicon glyphicon-plus-sign"></span>
+            <a href="{{ path('cuentacorriente_new', {'id' : cliente.id}) }}">
+                Crear nuevo Movimiento
+            </a>
+        </li>
+        <li>
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <a href="{{ path('cuentacorriente') }}">
+                Volver a la lista
+            </a>
+        </li>
+    </ul>
+    </div>
 {% endblock %}

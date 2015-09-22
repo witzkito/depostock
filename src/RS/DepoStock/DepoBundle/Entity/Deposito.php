@@ -357,9 +357,11 @@ class Deposito
     {
         foreach ($this->getStock() as $key => $stock)
         {
-            if ($key == $producto->getId())
+            if ($key == $producto->getProducto()->getId())
             {
-                return true;
+                if ($producto->getCantidad() <= $stock){
+                    return true;
+                }
             }
         }
         return false;
