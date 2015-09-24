@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use RS\DepoStock\DepoBundle\Form\EnvioGastoType;
 use RS\DepoStock\DepoBundle\Entity\Caja;
 use RS\DepoStock\DepoBundle\Entity\CuentaCorriente;
+use Symfony\Component\HttpFoundation\Response;
 
 class EnvioController extends Controller
 {
@@ -407,6 +408,26 @@ class EnvioController extends Controller
                 "form" => $form->createView(), "entity" => $envio, "productos" => $arrayProductos
             );    
        
+    }
+    
+     /**
+     * @Route("/imprimir/{id}", name="envio_imprimir")
+     * @Template()
+     */
+    public function imprimirAction($id)
+    {
+        $em = $this->get('doctrine')->getManager();
+        $envio = $em->getRepository('DepoBundle:Envio')->find($id);
+        $gastos = $em->getRepository('DepoBundle:Gasto')->findAll();
+        $facade = $this->get('ps_pdf.facade');
+        $response = new Response();
+        $this->render('DepoBundle:Envio:imprimir.pdf.twig', 
+                array("entity" => $envio, "gastos" => $gastos), $response);
+        
+        $xml = $response->getContent();
+        $content = $facade->render($xml);
+        
+        return new Response($content, 200, array('content-type' => 'application/pdf'));
     }
 
 }

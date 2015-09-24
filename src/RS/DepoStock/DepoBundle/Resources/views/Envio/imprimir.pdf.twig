@@ -1,0 +1,57 @@
+<pdf>
+    <dynamic-page>
+        
+        <div>
+            <h1>Documento Envio Nro. {{entity.id}}</h1>
+            <hr/>
+            <br/>
+            <h1>Camion</h1>
+            <table>
+                <tr><td width="150px" border-color="white"><b>Fecha:</b></td><td border-color="white"> {{ entity.fecha | date('d/m/Y')}}</td></tr>
+                <tr><td width="150px" border-color="white"><b>Empresa Transporte:</b></td><td border-color="white">{{ entity.transporte.nombreEmpresa}}</td></tr>
+                <tr><td width="150px" border-color="white"><b>Transportista: </b></td><td border-color="white">{{ entity.transporte}}</td></tr>
+            </table>
+        </div>
+            <br />
+            <hr/>
+            <h2>Envios a Clientes</h2>
+            <table>
+                <tr>
+                    <td text-align="center" width="50px" height="20px" padding-left="5px" background-color="#d3d3d3"><b>CLIENTE</b></td>
+                    <td text-align="center" width="30px" padding-left="5px" background-color="#d3d3d3"><b>PRODUCTO</b></td>
+                    <td text-align="center" width="30px" padding-left="5px" background-color="#d3d3d3"><b>CANTIDAD</b></td>
+                    <td text-align="center" width="30px" padding-left="5px" background-color="#d3d3d3"><b>TOTAL A COBRAR</b></td>
+                    <td text-align="center" width="30px" padding-left="5px" background-color="#d3d3d3"><b>ENTREGADO</b></td>
+                    <td text-align="center" width="30px" padding-left="5px" background-color="#d3d3d3"><b>EFECTIVO</b></td>
+                    <td text-align="center" width="30px" padding-left="5px" background-color="#d3d3d3"><b>CHEQUE</b></td>
+                </tr>
+                {% for prod in entity.productos %}
+                    <tr>
+                        <td height="20px" padding="5px"><b>{{prod.cliente}}</b></td>
+                        <td height="20px" padding="5px">{{prod.producto}}</td>
+                        <td height="20px" padding="5px">{{prod.cantidad}}</td>
+                        <td height="20px" padding="5px">{{prod.total}}</td>
+                        <td height="20px" padding="5px" text-align="center">Si  /  No</td>
+                        <td height="20px" padding="5px"></td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+            </table>
+            
+            <br /><br />
+            <h2>Gastos</h2>
+            <table width="300px">
+                <tr>
+                    <td width="50px" height="20px" padding="5px" background-color="#d3d3d3"><b>Gasto</b></td>
+                    <td width="30px" padding="5px" background-color="#d3d3d3"><b>Total</b></td>
+                </tr>
+                {% for gasto in gastos %}
+                    <tr>
+                        <td height="20px" padding="5px"><b>{{gasto}}</b></td>
+                        <td padding="5px">$</td>                        
+                    </tr>
+                {% endfor %}
+            </table>
+            
+    </dynamic-page>
+</pdf>

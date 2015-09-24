@@ -62,6 +62,13 @@
 
                 <ul class="record_actions">
             <li>
+                <span class="glyphicon glyphicon-print"></span>
+                <a href="{{ path('envio_imprimir', {'id' : entity.id }) }}">
+                    Imprimr
+                </a>
+            </li>
+                
+            <li>
                 <span class="glyphicon glyphicon-chevron-left"></span>
                 <a href="{{ path('envio') }}">
                     Volver a la lista
