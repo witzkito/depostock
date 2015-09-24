@@ -8,11 +8,11 @@
                 <tbody>
                     <tr>                        
                         <th class="success">Fecha</th>
-                        <td class="success" colspan="6">{{ entity.fecha|date('Y-m-d H:i:s') }}</td>
+                        <td class="success" colspan="7">{{ entity.fecha|date('Y-m-d H:i:s') }}</td>
                     </tr>
                     <tr>
                         <th class="success">Transportista</th>
-                        <td class="success" colspan="6">{{ entity.transporte }}</td>
+                        <td class="success" colspan="7">{{ entity.transporte }}</td>
                     </tr>
                     {% set totalIngreso = 0 %}
                     {% for producto in entity.productos %}
@@ -23,6 +23,7 @@
                             <td>{{producto.cantidad}}</td>
                             <td>${{producto.precio}}</td>
                             <td>${{producto.cantidad * producto.precio}}</td>
+                            <td>${{producto.pagado }}</td>
                             <td>
                                 {% if producto.confirmado %}
                                     <span class="glyphicon glyphicon-ok"></span>
@@ -49,7 +50,7 @@
                         </tr>
                     {% endfor %}
                     <tr>
-                        <th class="success" colspan="5">Total</th>
+                        <th class="success" colspan="6">Total</th>
                         {% if entity.completado %}
                             <th class="success" colspan="3">${{entity.total}}</td>
                         {% else %}

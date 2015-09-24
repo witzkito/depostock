@@ -12,7 +12,8 @@
                     <th>Cantidad</th>
                     <th>Precio</th>
                     <th>Total</th>
-                    <th></th>
+                    <th>Confirmar</th>
+                    <th>Pagado</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,7 +23,10 @@
                         <td>{{prod.cantidad}}</td>
                         <td>${{prod.precio}}</td>
                         <td>${{prod.precio * prod.cantidad}}</td>
-                        <td>{{form_widget(form[prod.id])}}</td>
+                        {% set conf = 'conf_' ~ prod.id %}
+                        {% set cant = 'cant_' ~ prod.id %}
+                        <td style="width:10%;">{{form_widget(form[conf])}}</td>
+                        <td style="width:10%;">{{form_widget(form[cant])}}</td>
                     </tr>
                 {% endfor %}
             </tbody>
