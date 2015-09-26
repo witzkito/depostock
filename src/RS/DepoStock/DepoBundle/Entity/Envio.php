@@ -245,4 +245,18 @@ class Envio
     {
         $this->gastos = null;
     }
+    
+    /**
+     * Funcion que retornar los clientes de un envio
+     * @return array
+     */
+    public function getClientesEnvio()
+    {
+        $retornar = array();
+        foreach ($this->productos as $producto)
+        {
+            $retornar[$producto->getCliente()->getId()] = $producto->getCliente();
+        }
+        return $retornar;
+    }
 }

@@ -52,6 +52,17 @@
                     </tr>
                 {% endfor %}
             </table>
+            <hr />
+            <h2>Datos Clientes</h2>
+            <table>
+                {% for cliente in entity.clientesEnvio %}
+                    <tr>
+                        <td height="20px" padding="5px" width="150px"><b>{{cliente.nombre}}</b></td>
+                        <td padding="5px">{{cliente.localidad ? cliente.localidad ~ ', ' : ''}} {{cliente.calle ? cliente.calle ~ ', ' : ''}} {{cliente.numero ? cliente.numero ~ ', ' : ''}}
+                            {{cliente.telefono ? cliente.telefono ~ ", " : ""}}</td>                        
+                    </tr>
+                {% endfor %}
+            </table>
             
     </dynamic-page>
 </pdf>
