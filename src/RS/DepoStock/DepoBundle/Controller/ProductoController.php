@@ -27,15 +27,31 @@ class ProductoController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $user = $this->container->get('security.context')->getToken()->getUser();
-        $userDeposito = $em->getRepository('DepoBundle:UsuarioDeposito')->findOneBy(array('usuario' => $user->getId())); 
-        $entities = $userDeposito->getDeposito()->getEmpresa()->getProductos();
+        $datatable = $this->get('depo.datatable.producto');
+        $datatable->buildDatatable();
 
         return array(
-            'entities' => $entities,
-        );
+            'datatable' => $datatable,
+        );  
     }
+    
+    /**
+    * Get all Post entities.
+    *
+    * @Route("/results", name="producto_results")
+    *
+    * @return \Symfony\Component\HttpFoundation\Response
+    */
+   public function indexResultsAction()
+   {
+       $datatable = $this->get('depo.datatable.producto');
+       $datatable->buildDatatable();
+
+       $query = $this->get('sg_datatables.query')->getQueryFrom($datatable);
+
+       return $query->getResponse();
+   }
+   
     /**
      * Creates a new Producto entity.
      *
@@ -113,7 +129,7 @@ class ProductoController extends Controller
     /**
      * Finds and displays a Producto entity.
      *
-     * @Route("/{id}", name="producto_show")
+     * @Route("/{id}", name="producto_show", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -138,7 +154,7 @@ class ProductoController extends Controller
     /**
      * Displays a form to edit an existing Producto entity.
      *
-     * @Route("/{id}/edit", name="producto_edit")
+     * @Route("/{id}/edit", name="producto_edit", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */

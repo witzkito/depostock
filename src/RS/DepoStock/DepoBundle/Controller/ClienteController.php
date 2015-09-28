@@ -27,14 +27,33 @@ class ClienteController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $user = $this->container->get('security.context')->getToken()->getUser();
-        $userDeposito = $em->getRepository('DepoBundle:UsuarioDeposito')->findOneBy(array('usuario' => $user->getId())); 
-        $entities = $userDeposito->getDeposito()->getEmpresa()->getClientes();
+        $datatable = $this->get('depo.datatable.cliente');
+        $datatable->buildDatatable();
+
         return array(
-            'entities' => $entities,
-        );
+            'datatable' => $datatable,
+        );       
+        
     }
+    
+    /**
+    * Get all Post entities.
+    *
+    * @Route("/results", name="cliente_results")
+    *
+    * @return \Symfony\Component\HttpFoundation\Response
+    */
+   public function indexResultsAction()
+   {
+       $datatable = $this->get('depo.datatable.cliente');
+       $datatable->buildDatatable();
+
+       $query = $this->get('sg_datatables.query')->getQueryFrom($datatable);
+
+       return $query->getResponse();
+   }
+    
+    
     /**
      * Creates a new Cliente entity.
      *
@@ -106,7 +125,7 @@ class ClienteController extends Controller
     /**
      * Finds and displays a Cliente entity.
      *
-     * @Route("/{id}", name="cliente_show")
+     * @Route("/{id}", name="cliente_show", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -131,7 +150,7 @@ class ClienteController extends Controller
     /**
      * Displays a form to edit an existing Cliente entity.
      *
-     * @Route("/{id}/edit", name="cliente_edit")
+     * @Route("/{id}/edit", name="cliente_edit", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -209,7 +228,7 @@ class ClienteController extends Controller
     /**
      * Deletes a Cliente entity.
      *
-     * @Route("/{id}", name="cliente_delete")
+     * @Route("/{id}", name="cliente_delete", options={"expose"=true})
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)

@@ -4,47 +4,11 @@
     <div class="container">
         <h1>Lista de Productos</h1>
 
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Precio</th>
-                    <th>Foto</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for entity in entities %}
-                <tr>
-                    <td>{{ entity.nombre }}</td>
-                    <td>{{ entity.precio }}</td>
-                    <td>
-                        {% if entity.fotoproducto.path != null %}
-                            <img src="{{ asset(entity.fotoproducto.webpath)}}" width=30>
-                        {% endif %}
-                    </td>
-                    <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('producto_show', { 'id': entity.id }) }}">Ver</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('producto_edit', { 'id': entity.id }) }}">Editar</a>
-                        </li>
-                    </ul>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-
-            <ul class="record_actions">
-            <li>
-                <span class="glyphicon glyphicon-plus-sign"></span>
-                <a href="{{ path('producto_new') }}">
-                    Crear nuevo Producto
-                </a>
-            </li>
-        </ul>
+        <br />
+        <span class="glyphicon glyphicon-plus-sign"></span><a href="{{ path('producto_new') }}"> Crear nuevo Producto</a>
+        
+        <br><br>
+        {{ datatable_render(datatable) }}
+            
     </div>
 {% endblock %}

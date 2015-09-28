@@ -1,4 +1,15 @@
 services:
-#    depo.example:
-#        class: RS\DepoStock\DepoBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    depo.datatable.cliente:
+        class:   RS\DepoStock\DepoBundle\Datatables\ClienteDatatable
+        tags:
+                 - { name: sg.datatable.view }
+
+    depo.datatable.producto:
+        class:   RS\DepoStock\DepoBundle\Datatables\ProductoDatatable
+        tags:
+                 - { name: sg.datatable.view }
+                 
+    depo.datatable.pedidos:
+        class:   RS\DepoStock\DepoBundle\Datatables\PedidoDatatable
+        tags:
+                 - { name: sg.datatable.view }

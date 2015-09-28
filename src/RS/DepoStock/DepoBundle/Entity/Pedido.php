@@ -45,7 +45,6 @@ class Pedido
      */
     private $empresa;
 
-
     /**
      * Get id
      *

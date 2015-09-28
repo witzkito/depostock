@@ -27,12 +27,30 @@ class PedidoController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('DepoBundle:Pedido')->findAllOrdenadosFecha();
+        $datatable = $this->get('depo.datatable.pedidos');
+        $datatable->buildDatatable();
+
         return array(
-            'entities' => $entities,
-        );
+            'datatable' => $datatable,
+        ); 
     }
+    
+    /**
+    * Get all Post entities.
+    *
+    * @Route("/results", name="pedido_results")
+    *
+    * @return \Symfony\Component\HttpFoundation\Response
+    */
+   public function indexResultsAction()
+   {
+       $datatable = $this->get('depo.datatable.pedidos');
+       $datatable->buildDatatable();
+
+       $query = $this->get('sg_datatables.query')->getQueryFrom($datatable);
+
+       return $query->getResponse();
+   }
     /**
      * Creates a new Pedido entity.
      *

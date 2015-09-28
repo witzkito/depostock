@@ -31,7 +31,9 @@ class AppKernel extends Kernel
             new Genemu\Bundle\FormBundle\GenemuFormBundle(),
             new RaulFraile\Bundle\LadybugBundle\RaulFraileLadybugBundle(),
             new Ps\PdfBundle\PsPdfBundle(),
-            new SC\DatetimepickerBundle\SCDatetimepickerBundle()
+            new SC\DatetimepickerBundle\SCDatetimepickerBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+            new Sg\DatatablesBundle\SgDatatablesBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

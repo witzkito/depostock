@@ -44,7 +44,9 @@
         "psliwa/pdf-bundle": "dev-master",
         "sonata-project/easy-extends-bundle": "~2.1@dev",
         "sonata-project/user-bundle": "2.2.x-dev",
-        "stephanecollot/datetimepicker-bundle": "dev-master"
+        "stephanecollot/datetimepicker-bundle": "dev-master",
+        "friendsofsymfony/jsrouting-bundle": "@stable",
+        "sg/datatablesbundle": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
