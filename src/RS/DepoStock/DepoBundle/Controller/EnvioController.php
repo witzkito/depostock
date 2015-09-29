@@ -82,17 +82,35 @@ class EnvioController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('DepoBundle:Envio')->findAllOrdenadosFecha();
+        $datatable = $this->get('depo.datatable.envio');
+        $datatable->buildDatatable();
+
         return array(
-            'entities' => $entities,
-        );
+            'datatable' => $datatable,
+        ); 
     }
+    
+    /**
+    * Get all Envio entities.
+    *
+    * @Route("/results", name="envio_results")
+    *
+    * @return \Symfony\Component\HttpFoundation\Response
+    */
+   public function indexResultsAction()
+   {
+       $datatable = $this->get('depo.datatable.envio');
+       $datatable->buildDatatable();
+
+       $query = $this->get('sg_datatables.query')->getQueryFrom($datatable);
+
+       return $query->getResponse();
+   }
     
     /**
      * Lists o une entity.
      *
-     * @Route("/envio/show/{id}", name="show_envio")
+     * @Route("/envio/show/{id}", name="show_envio", options={"expose"=true})
      * @Template()
      */
     public function showAction($id)
@@ -150,7 +168,7 @@ class EnvioController extends Controller
     /**
      * Displays a form to edit an existing Pedido entity.
      *
-     * @Route("/envio/edit/{id}", name="edit_envio")
+     * @Route("/envio/edit/{id}", name="edit_envio", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */

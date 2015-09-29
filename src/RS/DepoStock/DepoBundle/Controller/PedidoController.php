@@ -123,7 +123,7 @@ class PedidoController extends Controller
     /**
      * Finds and displays a Pedido entity.
      *
-     * @Route("/{id}", name="pedido_show")
+     * @Route("/{id}", name="pedido_show", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -148,7 +148,7 @@ class PedidoController extends Controller
     /**
      * Displays a form to edit an existing Pedido entity.
      *
-     * @Route("/{id}/edit", name="pedido_edit")
+     * @Route("/{id}/edit", name="pedido_edit", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */

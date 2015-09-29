@@ -6,11 +6,11 @@ use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
 use Sg\DatatablesBundle\Datatable\View\Style;
 
 /**
- * Class PedidoDatatable
+ * Class EnvioDatatable
  *
  * @package RS\DepoStock\DepoBundle\Datatables
  */
-class PedidoDatatable extends AbstractDatatableView
+class EnvioDatatable extends AbstractDatatableView
 {
     
     /**
@@ -21,13 +21,7 @@ class PedidoDatatable extends AbstractDatatableView
         $formatter = function($line){
             $repository = $this->em->getRepository($this->getEntity());
             $entity = $repository->find($line['id']);
-            if ($entity->realizado())
-            {
-                $line['realizado'] = "SI";
-            }else{
-                $line['realizado'] = "NO";
-            }
-            
+            $line['total'] = "$ " . $entity->getTotal();            
 
             return $line;
          
@@ -59,7 +53,7 @@ class PedidoDatatable extends AbstractDatatableView
         ));
 
                 $this->ajax->setOptions(array(
-            'url' => $this->router->generate('pedido_results'),
+            'url' => $this->router->generate('envio_results'),
             'type' => 'GET'
         ));
         
@@ -79,7 +73,7 @@ class PedidoDatatable extends AbstractDatatableView
             'state_duration' => 7200,
             'stripe_classes' => array(),
             'responsive' => false,
-            'class' => Style::BASE_STYLE,
+            'class' => Style::BOOTSTRAP_3_STYLE . 'table table-striped',
             'individual_filtering' => false,
             'individual_filtering_position' => 'foot',
             'use_integration_options' => false
@@ -88,15 +82,15 @@ class PedidoDatatable extends AbstractDatatableView
         $this->columnBuilder
                 ->add('id', 'column', array('title' => 'Id',))
                 ->add('fecha', 'datetime', array('title' => 'Fecha',))
-                ->add('cliente.nombre', 'column', array('title' => 'Cliente Nombre',))
-                ->add('realizado', 'virtual', array('title' => 'Realizado'))
+                ->add('transporte.nombre', 'column', array('title' => 'Transporte Nombre',))
+                ->add('total', 'virtual', array('title' => 'Total'))
                 ->add(null, 'action', array(
                 'title' => 'Acciones',
                 'start_html' => '<div class="wrapper">',
                 'end_html' => '</div>',
                 'actions' => array(
                     array(
-                        'route' => 'pedido_show',
+                        'route' => 'show_envio',
                         'route_parameters' => array(
                             'id' => 'id'
                         ),
@@ -110,7 +104,7 @@ class PedidoDatatable extends AbstractDatatableView
                         ),
                     ),
                     array(
-                        'route' => 'pedido_edit',
+                        'route' => 'edit_envio',
                         'route_parameters' => array(
                             'id' => 'id'
                         ),
@@ -126,16 +120,13 @@ class PedidoDatatable extends AbstractDatatableView
                 )))
                 ;
     }
-    
-    
-
 
     /**
      * {@inheritdoc}
      */
     public function getEntity()
     {
-        return 'RS\DepoStock\DepoBundle\Entity\Pedido';
+        return 'RS\DepoStock\DepoBundle\Entity\Envio';
     }
 
     /**
@@ -143,6 +134,6 @@ class PedidoDatatable extends AbstractDatatableView
      */
     public function getName()
     {
-        return 'pedido_datatable';
+        return 'envio_datatable';
     }
 }

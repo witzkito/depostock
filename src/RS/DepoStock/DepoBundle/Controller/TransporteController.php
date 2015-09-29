@@ -27,16 +27,31 @@ class TransporteController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $user = $this->container->get('security.context')->getToken()->getUser();
-        $userDeposito = $em->getRepository('DepoBundle:UsuarioDeposito')->findOneBy(array('usuario' => $user->getId())); 
-        $entities = $userDeposito->getDeposito()->getEmpresa()->getTransportes();
+        $datatable = $this->get('depo.datatable.transporte');
+        $datatable->buildDatatable();
 
         return array(
-            'entities' => $entities,
-        );
+            'datatable' => $datatable,
+        ); 
     }
+    
+    /**
+    * Get all Transporte entities.
+    *
+    * @Route("/results", name="transporte_results")
+    *
+    * @return \Symfony\Component\HttpFoundation\Response
+    */
+   public function indexResultsAction()
+   {
+       $datatable = $this->get('depo.datatable.transporte');
+       $datatable->buildDatatable();
+
+       $query = $this->get('sg_datatables.query')->getQueryFrom($datatable);
+
+       return $query->getResponse();
+   }
+   
     /**
      * Creates a new Transporte entity.
      *
@@ -108,7 +123,7 @@ class TransporteController extends Controller
     /**
      * Finds and displays a Transporte entity.
      *
-     * @Route("/{id}", name="transporte_show")
+     * @Route("/{id}", name="transporte_show", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -133,7 +148,7 @@ class TransporteController extends Controller
     /**
      * Displays a form to edit an existing Transporte entity.
      *
-     * @Route("/{id}/edit", name="transporte_edit")
+     * @Route("/{id}/edit", name="transporte_edit", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */

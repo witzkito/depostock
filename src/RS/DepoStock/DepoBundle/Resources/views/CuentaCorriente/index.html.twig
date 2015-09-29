@@ -4,31 +4,8 @@
     <div class="container">
     <h1>Cuenta Corrientes</h1>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th class="success">Id</th>
-                <th class="success">Cliente</th>
-                <th class="success">Total</th>
-                <th class="success">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('cuentacorriente_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity  }}</td>
-                <td>{{ entity.cuentaTotal }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('cuentacorriente_show', { 'id': entity.id }) }}">Ver</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <br />
+        <br><br>
+        {{ datatable_render(datatable) }}
     </div>    
     {% endblock %}

@@ -13,3 +13,18 @@ services:
         class:   RS\DepoStock\DepoBundle\Datatables\PedidoDatatable
         tags:
                  - { name: sg.datatable.view }
+    
+    depo.datatable.transporte:
+        class:   RS\DepoStock\DepoBundle\Datatables\TransporteDatatable
+        tags:
+                 - { name: sg.datatable.view }
+                 
+    depo.datatable.envio:
+        class:   RS\DepoStock\DepoBundle\Datatables\EnvioDatatable
+        tags:
+                 - { name: sg.datatable.view }
+                 
+    depo.datatable.cuentacorriente:
+        class:   RS\DepoStock\DepoBundle\Datatables\CuentaCorrienteDatatable
+        tags:
+                 - { name: sg.datatable.view }

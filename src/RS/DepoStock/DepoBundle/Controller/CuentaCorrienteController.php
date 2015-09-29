@@ -27,14 +27,31 @@ class CuentaCorrienteController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('DepoBundle:Cliente')->findAll();
+        $datatable = $this->get('depo.datatable.cuentacorriente');
+        $datatable->buildDatatable();
 
         return array(
-            'entities' => $entities,
-        );
+            'datatable' => $datatable,
+        ); 
     }
+    
+    /**
+    * Get all Post entities.
+    *
+    * @Route("/results", name="cuentacorriente_results")
+    *
+    * @return \Symfony\Component\HttpFoundation\Response
+    */
+   public function indexResultsAction()
+   {
+       $datatable = $this->get('depo.datatable.cuentacorriente');
+       $datatable->buildDatatable();
+
+       $query = $this->get('sg_datatables.query')->getQueryFrom($datatable);
+
+       return $query->getResponse();
+   }
+   
     /**
      * Creates a new CuentaCorriente entity.
      *
@@ -109,7 +126,7 @@ class CuentaCorrienteController extends Controller
     /**
      * Finds and displays a CuentaCorriente entity.
      *
-     * @Route("/{id}", name="cuentacorriente_show")
+     * @Route("/{id}", name="cuentacorriente_show", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */

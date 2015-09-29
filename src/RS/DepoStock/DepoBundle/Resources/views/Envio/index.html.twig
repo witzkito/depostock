@@ -4,45 +4,10 @@
     <div class="container">
         <h1>Lista de Envios</h1>
 
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Transporte</th>
-                    <th></th>
-                    <th>Total</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for entity in entities %}
-                <tr>
-                    <td>{% if entity.fecha %}{{ entity.fecha|date('d-m-Y h:i') }}{% endif %}</td>
-                    <td>{{entity.transporte}}</td>
-                    <td>
-                        {% if entity.completado %}
-                            <span class="glyphicon glyphicon-ok"></span>
-                        {% else %}
-                            <span class="glyphicon glyphicon-remove"></span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {{entity.total}}
-                    </td>
-                    <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('show_envio', { 'id': entity.id }) }}">Ver</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('completar_envio', { 'id': entity.id }) }}">Completar</a>
-                        </li>
-                    </ul>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        <br />
+        
+        <br><br>
+        {{ datatable_render(datatable) }}
 
     </div>
 {% endblock %}
