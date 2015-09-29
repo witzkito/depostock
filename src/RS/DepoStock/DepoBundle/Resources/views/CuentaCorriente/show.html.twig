@@ -23,7 +23,7 @@
                 <td>{{ cuenta.egreso }}</td>
                 <td>{{ cuenta.saldo }}</td>
                 <td>{{ cuenta.descripcion }}</td>
-                <td>{{ cuenta.url }}</td>
+                <td><a href="{{ cuenta.url }}">Ver</a></td>
             </tr>
             {% endfor %}
         </tbody>
