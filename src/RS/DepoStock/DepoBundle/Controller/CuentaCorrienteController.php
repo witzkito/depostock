@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use RS\DepoStock\DepoBundle\Entity\CuentaCorriente;
 use RS\DepoStock\DepoBundle\Form\CuentaCorrienteType;
+use RS\DepoStock\DepoBundle\Entity\Caja;
 
 /**
  * CuentaCorriente controller.
@@ -71,9 +72,13 @@ class CuentaCorrienteController extends Controller
 
         if ($form->isValid()) {
             $em->persist($entity);
+            
             $em->flush();
-
-            return $this->redirect($this->generateUrl('cuentacorriente_show', array('id' => $entity->getCliente()->getId())));
+            if ($entity->getEgreso() > 0){
+                return $this->redirect($this->generateUrl('caja_cuenta_new', array('id' => $entity->getId())));
+            }else{
+                return $this->redirect($this->generateUrl('caja_show', array('id' => $entity->getId())));
+            }
         }
 
         return array(

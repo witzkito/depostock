@@ -193,7 +193,7 @@ class EnvioController extends Controller
     }
     
     /**
-     * @Route("/envio/completar/{id}", name="completar_envio")
+     * @Route("/envio/completar/{id}", name="completar_envio", options={"expose"=true})
      * @Template()
      */
     public function completarAction($id)
@@ -259,52 +259,6 @@ class EnvioController extends Controller
             }           
                   
             foreach ($envio->getProductos() as $prod){
-               
-                /*$caja = new Caja();
-                $caja->setDeposito($envio->getDeposito());
-                $caja->setFecha(new \DateTime('now'));
-                $caja->setEnlace($this->generateUrl('show_envio', array('id' => $envio->getId())));
-                if ($data['conf_' . $prod->getId()] != $prod->getConfirmado()){
-                    if ($data['conf_' . $prod->getId()]){
-                        $caja->setDescripcion("Venta a ". $prod->getCliente()->getNombre() . " de " . $prod->getProducto()->getNombre());
-                        $caja->setIngreso($data['cant_' . $prod->getId()]);
-                        $caja->setEgreso(0);
-                    }else{
-                        $caja->setDescripcion("Cancelacion Venta a ". $prod->getCliente()->getNombre(). " de " . $prod->getProducto()->getNombre());
-                        $caja->setIngreso(0);
-                        $caja->setEgreso($data['cant_' . $prod->getId()]);
-                    }
-                    $em->persist($caja);
-                }else{
-                    if ($data['cant_' . $prod->getId()] != $prod->getPagado()){
-                        $diferencia = $data['cant_' . $prod->getId()] - $prod->getPagado();
-                        if ($diferencia > 0){
-                            $caja->setDescripcion("Cambio cantidad pagado Venta a ". $prod->getCliente()->getNombre() . " de " . $prod->getProducto()->getNombre());
-                            $caja->setIngreso($diferencia);
-                            $caja->setEgreso(0);
-                            
-                        }else{
-                            $caja->setDescripcion("Cambio cantidad pagado Venta a ". $prod->getCliente()->getNombre() . " de " . $prod->getProducto()->getNombre());
-                            $caja->setIngreso(0);
-                            $caja->setEgreso(abs($diferencia));
-                        }
-                    }
-                    if ($data['cant_' . $prod->getId()] != $prod->getTotal()){
-                        $diferencia = $prod->getTotal() - $data['cant_' . $prod->getId()];
-                        $cuentaCorriente = new CuentaCorriente();
-                        $cuentaCorriente->setCliente($prod->getCliente());
-                        $cuentaCorriente->setDescripcion("Venta de " . $prod->getProducto()->getNombre());
-                        $cuentaCorriente->setIngreso($diferencia);
-                        $cuentaCorriente->setEgreso(0);
-                        $cuentaCorriente->setFecha(new \DateTime('now'));
-                        $cuentaCorriente->setEnlace($this->generateUrl('show_envio', array('id' => $envio->getId())));
-                        $em->persist($cuentaCorriente);
-                    }
-                    $em->persist($caja);
-                }
-                $prod->setPagado($data['cant_' . $prod->getId()]);
-                $prod->setConfirmado($data['conf_' . $prod->getId()]);
-                $em->persist($prod);*/ 
                 
                 $caja = new Caja();
                 $caja->setDeposito($envio->getDeposito());

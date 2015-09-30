@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use RS\DepoStock\DepoBundle\Entity\Caja;
 use RS\DepoStock\DepoBundle\Form\CajaType;
+use RS\DepoStock\DepoBundle\Form\CajaCuentaType;
 
 /**
  * Caja controller.
@@ -267,5 +268,79 @@ class CajaController extends Controller
             ->add('submit', 'submit', array('label' => 'Borrar', 'attr' => array("class" => "btn btn-danger")))
             ->getForm()
         ;
+    }
+    
+    /**
+     * Displays a form to create a new Caja entity.
+     *
+     * @Route("/new/cuenta/{id}", name="caja_cuenta_new")
+     * @Method("GET")
+     * @Template()
+     */
+    public function newCuentaAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $cuenta = $em->getRepository('DepoBundle:CuentaCorriente')->find($id);
+        
+        $entity = new Caja();
+        $entity->setDescripcion($cuenta->getDescripcion());
+        $entity->setEgreso($cuenta->getIngreso());
+        $entity->setIngreso($cuenta->getEgreso());
+        $entity->setEnlace($this->generateUrl('cuentacorriente_show', array('id' => $id)));
+        $entity->setFecha(new \DateTime());
+        $form   = $this->createCreateCuentaForm($entity, $id);
+
+        return array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+            'cuenta' => $cuenta,
+        );
+    }
+    
+    /**
+     * Creates a form to create a Caja entity.
+     *
+     * @param Caja $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createCreateCuentaForm(Caja $entity, $id)
+    {
+        $form = $this->createForm(new CajaCuentaType(), $entity, array(
+            'action' => $this->generateUrl('caja_cuenta_create', array('id' => $id)),
+            'method' => 'POST',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Guardar'));
+
+        return $form;
+    }
+    
+    /**
+     * Creates a new Caja entity.
+     *
+     * @Route("/nuevo/cuenta/{id}", name="caja_cuenta_create")
+     * @Template("DepoBundle:Caja:newCuenta.html.twig")
+     */
+    public function createCuentaAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entity = new Caja();
+        $entity->setFecha(new \DateTime('now'));
+        $entity->setEnlace($this->generateUrl('cuentacorriente_show', array('id' => $id)));
+        $form = $this->createCreateCuentaForm($entity, $id);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em->persist($entity);
+            $em->flush();
+            return $this->redirect($this->generateUrl('caja_show', array('id' => $entity->getId())));
+        }
+
+        return array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+            'deposito' => $entity->getDeposito()
+        );
     }
 }

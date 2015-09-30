@@ -116,6 +116,20 @@ class EnvioDatatable extends AbstractDatatableView
                             'class' => 'btn btn-primary btn-xs',
                             'role' => 'button'
                         ),
+                    ),
+                     array(
+                        'route' => 'completar_envio',
+                        'route_parameters' => array(
+                            'id' => 'id'
+                        ),
+                        'label' => "Completar",
+                        'icon' => 'glyphicon glyphicon-edit',
+                        'attributes' => array(
+                            'rel' => 'tooltip',
+                            'title' => "Editar",
+                            'class' => 'btn btn-success btn-xs',
+                            'role' => 'button'
+                        ),
                     )
                 )))
                 ;
