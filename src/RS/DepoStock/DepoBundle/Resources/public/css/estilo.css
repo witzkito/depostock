@@ -9,3 +9,22 @@
 .wrapper a {
     margin: 2px;
 }
+
+.productos .form-group {
+    float: left;
+    margin-right: 20px;
+}
+
+.productos {
+    display: block;
+    width: 100%;
+}
+
+.form-producto {
+    height: 83px;
+    width: 100%;
+}
+
+.form-producto .btn.btn-danger {
+    margin-top: 25px;
+}
