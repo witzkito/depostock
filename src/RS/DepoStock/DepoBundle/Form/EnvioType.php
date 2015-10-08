@@ -6,9 +6,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use RS\DepoStock\DepoBundle\Form\EnvioProductoType;
+use RS\DepoStock\DepoBundle\Entity\Deposito;
 
 class EnvioType extends AbstractType
 {
+    
+    protected $deposito;
+
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -21,6 +26,8 @@ class EnvioType extends AbstractType
                 ->add('transporte', 'genemu_jqueryselect2_entity', array(
                 "class" => "DepoBundle:Transporte",
                 'label' => 'Transporte'))
+                ->add('productos', 'collection', array('type' => new EnvioProductoType($this->deposito),
+                    'allow_add' => true));
             
             
         ;
@@ -40,5 +47,9 @@ class EnvioType extends AbstractType
     public function getName()
     {
         return 'rs_depostock_depobundle_envio';
+    }
+    
+    public function __construct(Deposito $deposito) {
+        $this->deposito = $deposito;
     }
 }

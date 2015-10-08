@@ -27,7 +27,7 @@ class EnvioController extends Controller
         $deposito= $em->getRepository('DepoBundle:Deposito')->find($id);
         $empresa = $deposito->getEmpresa();
         $pedidos = $empresa->getPedidos($deposito);
-        $form = $this->createForm(new EnvioType());
+        $form = $this->createForm(new EnvioType($deposito));
         $arrayPedido = array();
         foreach ($pedidos as $pedido){
             foreach ($pedido->getProductos() as $producto)
@@ -62,6 +62,7 @@ class EnvioController extends Controller
                 }
             }
             $envio->setDeposito($deposito);
+            $envio->addProducto($data['productos']);
             $em->persist($envio);
             $em->flush();
             return $this->redirect($this->generateUrl('show_envio', array('id' => $envio->getId())));

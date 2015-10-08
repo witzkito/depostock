@@ -37,7 +37,15 @@
                     <tr><td>No existen pedidos cargados</td></tr>
                 {% endif %}
             </table>
-            
+            <div class="envio">
+            <ul class="productos" data-prototype="{{ form_widget(form.productos.vars.prototype)|e }}">
+                {% for producto in form.productos %}
+                    <li>{{ form_row(producto.producto) }}
+                        {{ form_row(producto.cantidad) }}
+                        {{ form_row(producto.cliente) }}</li>
+                {%endfor%}
+            </ul>
+            </div>
             <br />
             <input type="submit" class="btn btn-info" value="Guardar">
         </form>

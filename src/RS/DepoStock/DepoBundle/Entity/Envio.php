@@ -119,9 +119,12 @@ class Envio
      * @param \RS\DepoStock\DepoBundle\Entity\EnvioProducto $productos
      * @return Envio
      */
-    public function addProducto(\RS\DepoStock\DepoBundle\Entity\EnvioProducto $productos)
+    public function addProducto($productos)
     {
-        $this->productos[] = $productos;
+        foreach ($productos as $producto){
+            $producto->setEnvio($this);
+            $this->productos[] = $producto;
+        }
 
         return $this;
     }

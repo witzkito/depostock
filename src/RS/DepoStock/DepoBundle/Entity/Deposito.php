@@ -3,7 +3,7 @@
 namespace RS\DepoStock\DepoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use RS\DepoStock\DepoBundle\Entity\Producto;
 /**
  * Deposito
  *
@@ -365,6 +365,23 @@ class Deposito
             }
         }
         return false;
+    }
+    
+    /**
+     * Devuelve un vector de ID de productos que tienen stock
+     * @return array
+     */
+    public function getProductosStock()
+    {
+        $retornar = array();
+        foreach ($this->getStock() as $key => $stock)
+        {
+            if ($stock > 0)
+            {
+                $retornar[] = $key;                
+            }            
+        }
+        return $retornar;
     }
 
     /**
