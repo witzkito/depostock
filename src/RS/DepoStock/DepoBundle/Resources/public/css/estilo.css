@@ -25,8 +25,13 @@
     width: 100%;
 }
 
+.form-producto .form-group{
+    width: 25%;
+}
+
 .form-producto .btn.btn-danger {
     margin-top: 25px;
+    margin-right: 0px;
 }
 
     

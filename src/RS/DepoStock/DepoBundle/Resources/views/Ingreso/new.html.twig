@@ -11,12 +11,14 @@
           
 
             <h3>Productos</h3>
-            <ul class="productos" data-prototype="{{ form_widget(form.productos.vars.prototype)|e }}">
+            <div class="envio">
+            <div class="productos" data-prototype="{{ form_widget(form.productos.vars.prototype)|e }}">
                 {% for producto in form.productos %}
-                    <li>{{ form_row(producto.producto) }}</li>
-                    <li>{{ form_row(producto.cantidad) }}</li>
+                    {{ form_row(producto.producto) }}
+                    {{ form_row(producto.cantidad) }}
                 {% endfor %}
-            </ul>
+            </div>
+            </div>
         {{ form_end(form) }}
 
             <ul class="record_actions">
@@ -31,11 +33,11 @@
 
         // setup an "add a tag" link
         var $addTagLink = $('<input type="button" class="btn btn-success" value="Agregar un producto">');
-        var $newLinkLi = $('<li></li>').append($addTagLink);
+        var $newLinkLi = $('<div class="nuevo-producto"></div>').append($addTagLink);
 
         jQuery(document).ready(function() {
             // Get the ul that holds the collection of tags
-            $collectionHolder = $('ul.productos');
+            $collectionHolder = $('div.productos');
 
             // add the "add a tag" anchor and li to the tags ul
             $collectionHolder.append($newLinkLi);
@@ -69,7 +71,7 @@
                 $collectionHolder.data('index', index + 1);
 
                 // Display the form in the page in an li, before the "Add a tag" link li
-                var $newFormLi = $('<li></li>').append(newForm);
+                var $newFormLi = $('<div class="form-producto"></div>').append(newForm);
                 $newLinkLi.before($newFormLi);
                 addTagFormDeleteLink($newFormLi);
             }
@@ -85,8 +87,8 @@
                 // remove the li for the tag form
                 $tagFormLi.remove();
         });
-        
 }
+
 
 
     </script>   
