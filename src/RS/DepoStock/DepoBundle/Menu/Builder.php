@@ -24,6 +24,8 @@ class Builder extends ContainerAware
         $menu->addChild('Envios', array('route' => 'envio'));
         
         $menu->addChild('Cuentas Corrientes', array('route' => 'cuentacorriente'));
+        
+        $menu->addChild('Salir', array('route' => 'fos_user_security_logout'));
 
         return $menu;
     }
