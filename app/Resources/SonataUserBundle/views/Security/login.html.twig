@@ -3,9 +3,8 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 {% block fos_user_content %}
-   <div class="container-fluid">
+   <div class="container">
        <div class="row">
-           <div class="col-xs-6 col-lg-1"></div>
            <div class="col-xs-6 col-lg-8">
                 {% if error %}
                     {% if (error|trans({}, 'FOSUserBundle') == "Bad credentials.") %}
