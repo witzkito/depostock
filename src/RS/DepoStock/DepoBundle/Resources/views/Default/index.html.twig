@@ -41,12 +41,15 @@
         <table class="table">
             {% for entity in entities %}
                 <tr>
-                    <td class="success">{{entity.deposito}}</td>
-                    <td class="success"></td>
-                    <td class="success" align="right">
-                        <span class="glyphicon glyphicon-arrow-right"></span><span class="glyphicon glyphicon-home">&nbsp;</span><a href="{{ path('ingreso_deposito', {'id' : entity.deposito.id})}}">Ingresar</a>
-                        &nbsp;&nbsp;<span class="glyphicon glyphicon-arrow-left"></span><span class="glyphicon glyphicon-home">&nbsp;</span><a href="{{ path('new_envio', {'id' : entity.deposito.id})}}">Despachar</a>
-                        &nbsp;&nbsp;<span class="glyphicon glyphicon-list-alt"></span>&nbsp;<a href="{{ path('show_deposito', {'id' : entity.deposito.id})}}">Listar</a>
+                    <td class="success">{{entity.deposito.nombre}}</td>
+                    <td class="success" align="right" colspan="2">
+                        <div class="stock-botones">
+                            <ul>
+                                <li>&nbsp;&nbsp;<span class="glyphicon glyphicon-arrow-right"></span><span class="glyphicon glyphicon-home">&nbsp;</span><a href="{{ path('ingreso_deposito', {'id' : entity.deposito.id})}}">Ingresar</a></li>
+                                <li>&nbsp;&nbsp;<span class="glyphicon glyphicon-arrow-left"></span><span class="glyphicon glyphicon-home">&nbsp;</span><a href="{{ path('new_envio', {'id' : entity.deposito.id})}}">Despachar</a></li>
+                                <li>&nbsp;&nbsp;<span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{ path('show_deposito', {'id' : entity.deposito.id})}}">Listar</a></li>
+                            </ul>
+                        </div>
                     </td>
                 </tr>
                     {% for key,cantidad in entity.deposito.stock %}
