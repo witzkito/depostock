@@ -33,13 +33,18 @@
 @media screen and (min-width: 767px) {
     .stock-botones ul li {
         display: inline;
-        font-size: 100%;
-        
+        text-align: right;
+        //font-size: 70%;
     }
 }
 
-.stock-botones ul {
-        list-style-type: none;        
+@media screen and (max-width: 766px) {
+    .stock-botones ul { 
         text-align: left;
-        font-size: 70%;
+    }
+}
+
+
+.stock-botones ul {
+        list-style-type: none;                
 }
