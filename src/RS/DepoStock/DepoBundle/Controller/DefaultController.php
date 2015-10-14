@@ -11,9 +11,11 @@ class DefaultController extends Controller
         $em = $this->get('doctrine')->getManager();
         $user = $this->container->get('security.context')->getToken()->getUser();
         $entities = $em->getRepository('DepoBundle:UsuarioDeposito')->findBy(array('usuario' => $user->getId()));
-        $empresa = $entities[0]->getDeposito()->getEmpresa();
-        $pedidos = $empresa->getPedidos();
-        $clientes = $empresa->getClientesConCuentas();
+        if ($entities != null){
+            $empresa = $entities[0]->getDeposito()->getEmpresa();
+            $pedidos = $empresa->getPedidos();
+            $clientes = $empresa->getClientesConCuentas();
+        }
         return $this->render('DepoBundle:Default:index.html.twig', array("entities" => $entities, "pedidos" => $pedidos, "clientes" => $clientes));
     }
 }
