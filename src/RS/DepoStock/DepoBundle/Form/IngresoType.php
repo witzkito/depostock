@@ -15,7 +15,7 @@ class IngresoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('transporte')
+            ->add('transporte', null, array('required' => true))
             ->add('fecha', 'collot_datetime')
             ->add('productos', 'collection', array('type' => new IngresoProductoType(),
                                                             'allow_add'    => true,

@@ -15,8 +15,8 @@ class IngresoProductoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('producto')
-            ->add('cantidad')            
+            ->add('producto', null, array('required' => true))
+            ->add('cantidad', null, array('required' => true))            
         ;
     }
     
