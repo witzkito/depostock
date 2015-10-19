@@ -20,7 +20,7 @@ class EnvioProductoType extends AbstractType
     {
         $builder
             ->add('producto', 'entity', array(
-                'class' => 'DepoBundle:Producto',
+                'class' => 'DepoBundle:Producto', 'required' => true,
                 'query_builder' => function (ProductoRepository $er) {
                     return $er->createQueryBuilder('p')
                             ->where('p.id in (:deposito)')

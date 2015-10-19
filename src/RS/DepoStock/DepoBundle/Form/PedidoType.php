@@ -17,7 +17,8 @@ class PedidoType extends AbstractType
         $builder
             ->add('cliente', 'genemu_jqueryselect2_entity', array(
                 "class" => "DepoBundle:Cliente",
-                'label' => 'Cliente'))
+                'label' => 'Cliente',
+                'required' => true))
             ->add('productos', 'collection', array('type' => new PedidoProductoType(),
                                                             'allow_add'    => true,
                                                             'by_reference' => false,

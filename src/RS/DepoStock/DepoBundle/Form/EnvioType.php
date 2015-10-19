@@ -25,9 +25,10 @@ class EnvioType extends AbstractType
             array('format' => 'mm/dd/yyyy h:i')))
                 ->add('transporte', 'genemu_jqueryselect2_entity', array(
                 "class" => "DepoBundle:Transporte",
-                'label' => 'Transporte'))
+                'label' => 'Transporte',
+                'required' => true))
                 ->add('productos', 'collection', array('type' => new EnvioProductoType($this->deposito),
-                    'allow_add' => true));
+                    'allow_add' => true, 'required' => true));
             
             
         ;

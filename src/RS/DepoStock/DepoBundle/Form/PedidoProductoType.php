@@ -18,7 +18,8 @@ class PedidoProductoType extends AbstractType
             ->add('cantidad', null, array("attr" => array("placeholder" => 0)))
             ->add('producto', 'genemu_jqueryselect2_entity', array(
                 "class" => "DepoBundle:Producto",
-                'label' => 'Producto'))
+                'label' => 'Producto',
+                'required' => true))
         ;
     }
     
