@@ -15,7 +15,8 @@ class IngresoProductoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('producto', null, array('required' => true))
+            ->add('producto', 'genemu_jqueryselect2_entity', array('required' => true,
+                                                                    'class' => 'DepoBundle:Producto'))
             ->add('cantidad', null, array('required' => true))            
         ;
     }

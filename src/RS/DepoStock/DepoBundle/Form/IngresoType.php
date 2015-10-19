@@ -15,7 +15,8 @@ class IngresoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('transporte', null, array('required' => true))
+            ->add('transporte', 'genemu_jqueryselect2_entity', array('required' => true,
+                                                                    'class' => 'DepoBundle:Transporte'))
             ->add('fecha', 'collot_datetime')
             ->add('productos', 'collection', array('type' => new IngresoProductoType(),
                                                             'allow_add'    => true,
